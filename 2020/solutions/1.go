@@ -9,10 +9,11 @@ import (
 
 func main() {
 	input, _ := ioutil.ReadFile("2020/input/1")
-	entries := []int{}
-	for _, i := range strings.Fields(string(input)) {
-		entry, _ := strconv.Atoi(i)
-		entries = append(entries, entry)
+	in := strings.Split(strings.TrimSpace(string(input)), "\n")
+	var entries []int
+	for i := 0; i < len(in); i++ {
+		tmp, _ := strconv.Atoi(in[i])
+		entries = append(entries, tmp)
 	}
 	for i, x := range entries {
 		for j, y := range entries[i+1:] {
