@@ -8,7 +8,7 @@ import (
 )
 
 func main() {
-	input, _ := ioutil.ReadFile("input")
+	input, _ := ioutil.ReadFile("2021/input/1")
 	in := strings.Split(strings.TrimSpace(string(input)), "\n")
 	// convert strings to ints
 	var depths []int
