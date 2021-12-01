@@ -10,6 +10,8 @@ This is a repo for my [Advent of Code](https://adventofcode.com) attempts.
 go run 2021/solutions/1.go
 ```
 
+Previous years have not been updated to work with the latest version of Go and as such some of the utility code does not work. Might get to fixing that at some point but for now, 2020 code has had the input paths updated where it was previously specified and 2019 code has not been modified at all so YMMV. 
+
 ### Retrieving input
 
 Run the `getinput.sh` script without any options to pull the current days input. Use `-h` or `--help` to view the available options. 
