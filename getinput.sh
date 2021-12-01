@@ -4,10 +4,10 @@
 _usage(){
         printf "%s\n" "$0 -s path/to/session/key -y [0-9]{4} -d [0-9]{2} ]"
         printf "\t%s\n" "-h|--help|-?  Print this help message."
-        printf "\t%s\n" "-s|--session  Optional session file location. Default: [./session]"
-        printf "\t%s\n" "-y|--year  4 digit year to retrieve input for. Required if not December."
-        printf "\t%s\n" "-d|--day  2 digit day to retrieve input for. Required if not December."
-        printf "\t%s\n" "-o|--output  Optional output filename. Default: [input]"
+        printf "\t%s\n" "-s|--session  Session key file location. Defaults to ./session"
+        printf "\t%s\n" "-y|--year  4 digit year to retrieve input for. Defaults to current year"
+        printf "\t%s\n" "-d|--day  1 or 2 digit day to retrieve input for. Defaults to current day."
+        printf "\t%s\n" "-o|--output  Output filename. Defaults to the configured day."
         printf "\t%s\n" "-f|--force  Force overwrite of existing input file."
 		exit 0
 }
@@ -39,7 +39,7 @@ while :; do
             shift
             ;;
         -f|--force)
-            overwrite=1
+            overwrite="1"
             ;;
         *)
             break
@@ -64,21 +64,19 @@ fi
 
 # Set some variables 
 year=${year:=`date +%Y`}
-day=${day:=`date +%d`}
-outputPath=${year}/${day}
-outputFile=${outputFile:="input"}
+day=${day:=`date +%d | sed -e 's/^0//'`}
+outputPath=${year}/input
+outputFile=${outputFile:=${day}}
 output=${outputPath}/${outputFile}
 
 # Function to get the input file
 _getInput(){
-    local _day=`printf "${day}" | sed -e 's/^0//'`
-    local url=https://adventofcode.com/${year}/day/${_day}/input 
-    curl --cookie session=${sessionValue} -o ${output} ${url}
+    curl --cookie session=${sessionValue} -o ${output} https://adventofcode.com/${year}/day/${day}/input 
 }
 
 # Test if the overwrite flag is set
-overwrite=${overwrite:=0}
-if [[ ${overwrite} -eq 0 ]]; then
+overwrite=${overwrite:="0"} # overwrite logic doesnt work. gg
+if [[ ${overwrite} == "0" ]]; then
     # Validate the output path, create if necessary
     stat ${outputPath} > /dev/null 2>&1
     if [[ $? != 0 ]]; then
