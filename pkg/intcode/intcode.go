@@ -96,3 +96,7 @@ func (c *Computer) Multiply() {
 
 	c.Write(a*b, (c.instruction/10000)%10)
 }
+
+func (c *Computer) GetMemory() *[]int {
+	return c.memory
+}
