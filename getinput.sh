@@ -39,7 +39,7 @@ while :; do
             shift
             ;;
         -f|--force)
-            overwrite="1"
+            overwrite=1
             ;;
         *)
             break
@@ -64,36 +64,26 @@ fi
 
 # Set some variables 
 year=${year:=`date +%Y`}
-day=${day:=`date +%d | sed -e 's/^0//'`}
+day=${day:=`date +%-d`}
 outputPath=${year}/input
 outputFile=${outputFile:=${day}}
 output=${outputPath}/${outputFile}
 
 # Function to get the input file
 _getInput(){
+    mkdir -p ${outputPath}
     curl --cookie session=${sessionValue} -o ${output} https://adventofcode.com/${year}/day/${day}/input 
 }
 
-# Test if the overwrite flag is set
-overwrite=${overwrite:="0"} # overwrite logic doesnt work. gg
-if [[ ${overwrite} == "0" ]]; then
-    # Validate the output path, create if necessary
-    stat ${outputPath} > /dev/null 2>&1
-    if [[ $? != 0 ]]; then
-        mkdir -p ${outputPath}
-        _getInput
-    else 
-        # Validate the output file status
-        stat ${outputFile} > /dev/null 2>&1
-        if [[ $? != 0 ]]; then
-            _getInput
-        else
-            printf "File exists.\n"
-            exit 3
-        fi
-    fi
-else # Just send it (overwrite flag enabled)
-    mkdir -p ${outputPath}
+# Validate the output, create if necessary, fetch input
+overwrite=${overwrite:=0}
+stat ${output} > /dev/null 2>&1
+if [[ $? != 0 ]]; then
     _getInput
+elif [[ ${overwrite} == 1 ]]; then
+    _getInput
+else
+    printf "File exists.\n"
+    exit 3
 fi
 
