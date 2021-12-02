@@ -9,13 +9,12 @@ import (
 )
 
 type point struct {
-	x     int
-	y     int
-	steps int
+	x int
+	y int
 }
 
 func getPath(wire []string) []point {
-	var position = point{x: 0, y: 0, steps: 0}
+	var position = point{x: 0, y: 0}
 	var path []point
 	path = append(path, position)
 	for i := range wire {
@@ -23,28 +22,24 @@ func getPath(wire []string) []point {
 		direction := instruction[0]
 		distance, _ := strconv.Atoi(instruction[1:])
 		switch direction {
-		case 82: // ascii "R"
-			for j := 0; j < distance; j++ {
+		case 'R':
+			for ; distance > 0; distance-- {
 				position.x++
-				position.steps++
 				path = append(path, position)
 			}
-		case 76: // ascii "L"
-			for j := 0; j < distance; j++ {
+		case 'L':
+			for ; distance > 0; distance-- {
 				position.x--
-				position.steps++
 				path = append(path, position)
 			}
-		case 85: // ascii "U"
-			for j := 0; j < distance; j++ {
+		case 'U':
+			for ; distance > 0; distance-- {
 				position.y++
-				position.steps++
 				path = append(path, position)
 			}
-		case 68: // ascii "D"
-			for j := 0; j < distance; j++ {
+		case 'D':
+			for ; distance > 0; distance-- {
 				position.y--
-				position.steps++
 				path = append(path, position)
 			}
 		}
@@ -61,14 +56,13 @@ func (p *point) ManhattanDistance(q point) int {
 	return intAbs(q.x-p.x) + intAbs(q.y-p.y)
 }
 
-func getBestDistance(manhatten bool, wire *[][]point) int {
+func getBestDistance(manhatten bool, red *[]point, green *[]point) int {
 	min, last := 0, 0
-	start := (*wire)[0][0]
-	for stepA, i := range (*wire)[0] {
-		for stepB, j := range (*wire)[1] {
+	for stepA, i := range *red {
+		for stepB, j := range *green {
 			if i.x == j.x && i.y == j.y {
 				if manhatten {
-					last = start.ManhattanDistance(i)
+					last = (*red)[0].ManhattanDistance(i)
 				} else {
 					last = stepA + stepB
 				}
@@ -84,10 +78,9 @@ func getBestDistance(manhatten bool, wire *[][]point) int {
 func main() {
 	input, _ := ioutil.ReadFile("2019/input/3")
 	in := strings.Split(strings.TrimSpace(string(input)), "\n")
-	wire := [][]point{}
-	for i := range in {
-		wire = append(wire, getPath(strings.Split(strings.TrimSpace(string(in[i])), ",")))
-	}
-	fmt.Println("Part 1:", getBestDistance(true, &wire))
-	fmt.Println("Part 2:", getBestDistance(false, &wire))
+	redWire := getPath(strings.Split(strings.TrimSpace(string(in[0])), ","))
+	greenWire := getPath(strings.Split(strings.TrimSpace(string(in[1])), ","))
+
+	fmt.Println("Part 1:", getBestDistance(true, &redWire, &greenWire))
+	fmt.Println("Part 2:", getBestDistance(false, &redWire, &greenWire))
 }
