@@ -13,17 +13,20 @@ func main() {
 	diag := strings.Split(strings.TrimSpace(string(input)), "\n")
 
 	var bitSums []int
-	for i := 0; i < len(diag[0]); i++ {
+	for i := 0; i < len(diag[0]); i++ { // loop through each column of bits
 		bitSums = append(bitSums, 0)
-		for _, bit := range diag {
-			bitSums[i] += int(bit[i]) - int('0')
+		for _, row := range diag {
+			// convert the bit to its ascii value and subtract the ascii value of 0 to get a integer 1 or 0
+			bitSums[i] += int(row[i]) - int('0')
 		}
 	}
 	var gammaRate, epsilonRate int
 	for i, sum := range bitSums {
-		if sum > len(diag)/2 {
+		if sum > len(diag)/2 { // if the bit sum is greater than half of all rows, '1' is the most common bit
+			// use base 2 positional notation to convert from binary to decimal
+			// https://en.wikipedia.org/wiki/Binary_number#Decimal
 			gammaRate += int(math.Pow(2, float64(len(bitSums)-1-i)))
-		} else {
+		} else { // if the bit sum is less than or equal to half of all rows, '0' is the most common bit
 			epsilonRate += int(math.Pow(2, float64(len(bitSums)-1-i)))
 		}
 	}
