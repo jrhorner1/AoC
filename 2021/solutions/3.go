@@ -32,8 +32,8 @@ func main() {
 	powerConsumption := gammaRate * epsilonRate
 	fmt.Println("Part 1:", powerConsumption)
 
-	oxyGenRating := getRating(diag, 0, 0)
-	co2ScrubRating := getRating(diag, 1, 0)
+	oxyGenRating := getRating(diag, true, 0)
+	co2ScrubRating := getRating(diag, false, 0)
 	lifeSupportRating := oxyGenRating * co2ScrubRating
 	fmt.Println("Part 2:", lifeSupportRating)
 	fmt.Println("Happy Holidays 2021!")
@@ -58,49 +58,27 @@ func parse(file string) [][]int {
 	return diag
 }
 
-func getRating(diagData [][]int, bitCriteria int, index int) int {
-	// count bit frequency
-	zeros, ones := 0, 0
+func getRating(diagData [][]int, majority bool, index int) int {
+	// base case
+	if len(diagData) == 1 {
+		binaryString := parseBin(diagData[0])
+		rating, _ := strconv.ParseInt(binaryString, 2, 32)
+		return int(rating)
+	}
+	// divide the data into 2 slices based on bit value at index
+	var zerosData, onesData [][]int
 	for _, binarySlice := range diagData {
-		switch binarySlice[index] {
-		case 0:
-			zeros++
-		case 1:
-			ones++
+		if binarySlice[index] == 0 {
+			zerosData = append(zerosData, binarySlice)
+		} else {
+			onesData = append(onesData, binarySlice)
 		}
 	}
-	//determine majority bit
-	var majority int
-	var minority int
-	if zeros > ones {
-		majority, minority = 0, 1
-	} else {
-		majority, minority = 1, 0
+	// recurse with the data set that matches the bit criteria
+	if len(zerosData) > len(onesData) == majority {
+		return getRating(zerosData, majority, index+1)
 	}
-	// create a new slice based on bit criteria
-	var newData [][]int
-	switch bitCriteria {
-	case 0:
-		for _, binarySlice := range diagData {
-			if binarySlice[index] == majority {
-				newData = append(newData, binarySlice)
-			}
-		}
-	case 1:
-		for _, binarySlice := range diagData {
-			if binarySlice[index] == minority {
-				newData = append(newData, binarySlice)
-			}
-		}
-	}
-	// recurse
-	if len(newData) != 1 {
-		return getRating(newData, bitCriteria, index+1)
-	}
-	// convert the integer slice to a binary string then to a decimal number
-	binaryString := parseBin(newData[0])
-	rating, _ := strconv.ParseUint(binaryString, 2, 32)
-	return int(rating)
+	return getRating(onesData, majority, index+1)
 }
 
 func parseBin(binarySlice []int) string {
