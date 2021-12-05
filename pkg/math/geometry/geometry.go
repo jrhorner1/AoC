@@ -1,4 +1,8 @@
-package math/geometry
+package geometry
+
+import (
+	"github.com/jrhorner1/AoC/pkg/math"
+)
 
 type Point struct {
 	X int
@@ -6,7 +10,7 @@ type Point struct {
 }
 
 func (p *Point) ManhattanDistance(q Point) int {
-	return IntAbs(q.X-p.X) + IntAbs(q.Y-p.Y)
+	return math.IntAbs(q.X-p.X) + math.IntAbs(q.Y-p.Y)
 }
 
 type Line struct {
@@ -27,9 +31,14 @@ func (l *Line) Start() Point {
 		} else {
 			return l.B
 		}
-	} else {
-		return Point{}
+	} else if l.IsDiagonal() { // start is point such that x+y increase together
+		if l.A.X < l.B.X {
+			return l.A
+		} else {
+			return l.B
+		}
 	}
+	return Point{}
 }
 
 func (l *Line) End() Point {
@@ -45,18 +54,23 @@ func (l *Line) End() Point {
 		} else {
 			return l.A
 		}
-	} else {
-		return Point{}
+	} else if l.IsDiagonal() {
+		if l.A.X < l.B.X {
+			return l.B
+		} else {
+			return l.A
+		}
 	}
+	return Point{}
 }
 
 func (l *Line) Length() int {
 	if l.IsDiagonal() {
-		return l.End().X - l.Start().X
+		return math.IntAbs(l.A.X - l.B.X)
 	} else if l.IsHorizontal() {
-		return l.End().X - l.Start().X
+		return math.IntAbs(l.A.X - l.B.X)
 	} else if l.IsVertical() {
-		return l.End().Y - l.Start().Y
+		return math.IntAbs(l.A.Y - l.B.Y)
 	}
 	return 0
 }
@@ -76,7 +90,7 @@ func (l *Line) IsVertical() bool {
 }
 
 func (l *Line) IsDiagonal() bool {
-	if l.Start().X-l.End().X == l.Start().Y-l.End().Y {
+	if math.IntAbs(l.A.X-l.B.X) == math.IntAbs(l.A.Y-l.B.Y) {
 		return true
 	}
 	return false
