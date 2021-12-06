@@ -1,7 +1,6 @@
-package main
+package day5
 
 import (
-	"fmt"
 	"io/ioutil"
 	"strconv"
 	"strings"
@@ -9,13 +8,26 @@ import (
 	geom "github.com/jrhorner1/AoC/pkg/math/geometry"
 )
 
-func main() {
-	input, _ := ioutil.ReadFile("2021/input/5")
-	// input, _ := ioutil.ReadFile("2021/examples/5")
-	in := strings.Split(strings.TrimSpace(string(input)), "\n")
+var filename = "2021/input/5"
+
+func Part1() int {
+	return Puzzle(Input(filename), false)
+}
+
+func Part2() int {
+	return Puzzle(Input(filename), true)
+}
+
+func Input(file string) []string {
+	input, _ := ioutil.ReadFile(file)
+	output := strings.Split(strings.TrimSpace(string(input)), "\n")
+	return output
+}
+
+func Puzzle(input []string, part2 bool) int {
 	dangerZoneHV := make(map[geom.Point]int)
 	dangerZoneHVD := make(map[geom.Point]int)
-	for _, i := range in {
+	for _, i := range input {
 		points := strings.Split(strings.TrimSpace(i), "->")
 		a := parsePoint(strings.Split(strings.TrimSpace(points[0]), ","))
 		b := parsePoint(strings.Split(strings.TrimSpace(points[1]), ","))
@@ -47,9 +59,10 @@ func main() {
 			}
 		}
 	}
-	fmt.Println("Part 1:", getMostDangerous((&dangerZoneHV)))
-	fmt.Println("Part 2:", getMostDangerous(&dangerZoneHVD))
-	fmt.Println("Happy Holidays 2021!")
+	if part2 {
+		return getMostDangerous(&dangerZoneHVD)
+	}
+	return getMostDangerous((&dangerZoneHV))
 }
 
 func parsePoint(p []string) geom.Point {

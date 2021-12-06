@@ -31,7 +31,7 @@ func (l *Line) Start() Point {
 		} else {
 			return l.B
 		}
-	} else if l.IsDiagonal() { // start is point such that x+y increase together
+	} else if l.IsDiagonal() {
 		if l.A.X < l.B.X {
 			return l.A
 		} else {

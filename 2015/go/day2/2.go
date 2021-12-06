@@ -1,18 +1,31 @@
-package main
+package day2
 
 import (
-	"fmt"
 	"io/ioutil"
 	"sort"
 	"strconv"
 	"strings"
 )
 
-func main() {
-	input, _ := ioutil.ReadFile("2015/input/2")
-	in := strings.Split(strings.TrimSpace(string(input)), "\n")
+var filename = "2015/input/2"
+
+func Part1() int {
+	return Puzzle(Input(filename), false)
+}
+
+func Part2() int {
+	return Puzzle(Input(filename), true)
+}
+
+func Input(file string) []string {
+	input, _ := ioutil.ReadFile(file)
+	output := strings.Split(strings.TrimSpace(string(input)), "\n")
+	return output
+}
+
+func Puzzle(input []string, part2 bool) int {
 	wrappingPaper, ribbon := 0, 0
-	for _, d := range in {
+	for _, d := range input {
 		dimensions := strings.Split(d, "x")
 		l, _ := strconv.Atoi(dimensions[0])
 		w, _ := strconv.Atoi(dimensions[1])
@@ -27,6 +40,8 @@ func main() {
 		wrappingPaper += a + s[0]
 		ribbon += p[0] + v
 	}
-	fmt.Println("Part 1:", wrappingPaper)
-	fmt.Println("Part 2:", ribbon)
+	if part2 {
+		return ribbon
+	}
+	return wrappingPaper
 }
