@@ -1,19 +1,45 @@
 package y18
 
-import "fmt"
+import (
+	"fmt"
+
+	"github.com/jrhorner1/AoC/2018/go/day1"
+	"github.com/jrhorner1/AoC/2018/go/day2"
+	// "github.com/jrhorner1/AoC/2018/go/day3"
+	// "github.com/jrhorner1/AoC/2018/go/day4"
+	// "github.com/jrhorner1/AoC/2018/go/day5"
+	// "github.com/jrhorner1/AoC/2018/go/day6"
+	// "github.com/jrhorner1/AoC/2018/go/day7"
+	// "github.com/jrhorner1/AoC/2018/go/day8"
+	// "github.com/jrhorner1/AoC/2018/go/day9"
+	// "github.com/jrhorner1/AoC/2018/go/day10"
+	// "github.com/jrhorner1/AoC/2018/go/day11"
+	// "github.com/jrhorner1/AoC/2018/go/day12"
+	// "github.com/jrhorner1/AoC/2018/go/day13"
+	// "github.com/jrhorner1/AoC/2018/go/day14"
+	// "github.com/jrhorner1/AoC/2018/go/day15"
+	// "github.com/jrhorner1/AoC/2018/go/day16"
+	// "github.com/jrhorner1/AoC/2018/go/day17"
+	// "github.com/jrhorner1/AoC/2018/go/day18"
+	// "github.com/jrhorner1/AoC/2018/go/day19"
+	// "github.com/jrhorner1/AoC/2018/go/day20"
+	// "github.com/jrhorner1/AoC/2018/go/day21"
+	// "github.com/jrhorner1/AoC/2018/go/day22"
+	// "github.com/jrhorner1/AoC/2018/go/day23"
+	// "github.com/jrhorner1/AoC/2018/go/day24"
+	// "github.com/jrhorner1/AoC/2018/go/day25"
+)
 
 func Run(day *int) {
 	switch *day {
 	case 1:
-		panic("unimplemented")
-		// fmt.Println("\tDay 1 solutions")
-		// fmt.Println("Part 1:", day1.Part1())
-		// fmt.Println("Part 2:", day1.Part2())
+		fmt.Println("\tDay 1 solutions")
+		fmt.Println("Part 1:", day1.Part1())
+		fmt.Println("Part 2:", day1.Part2())
 	case 2:
-		panic("unimplemented")
-		// fmt.Println("\tDay 2 solutions")
-		// fmt.Println("Part 1:", day2.Part1())
-		// fmt.Println("Part 2:", day2.Part2())
+		fmt.Println("\tDay 2 solutions")
+		fmt.Println("Part 1:", day2.Part1())
+		fmt.Println("Part 2:", day2.Part2())
 	case 3:
 		panic("unimplemented")
 		// fmt.Println("\tDay 3 solutions")
