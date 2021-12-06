@@ -1,15 +1,30 @@
-package main
+package day0
 
 import (
-	"fmt"
 	"io/ioutil"
 	"strings"
 )
 
-func main() {
-	input, _ := ioutil.ReadFile("YEAR/input/DAY")
-	in := strings.Split(strings.TrimSpace(string(input)), "\n")
-	fmt.Println("Part 1:", in)
-	// fmt.Println("Part 2:", input)
-	fmt.Println("Happy Holidays 2021!")
+var filename = "0000/input/0"
+
+func Part1() int {
+	return Puzzle(Input(filename), false)
+}
+
+func Part2() int {
+	return Puzzle(Input(filename), true)
+}
+
+func Input(file string) []string {
+	input, _ := ioutil.ReadFile(file)
+	output := strings.Split(strings.TrimSpace(string(input)), "\n")
+	return output
+}
+
+func Puzzle(input []string, part2 bool) int {
+	// put code here
+	if part2 {
+		return 42
+	}
+	return 5 / 7
 }
