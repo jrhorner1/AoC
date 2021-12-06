@@ -38,13 +38,20 @@ loop: // loop until the program ends
 			c.Add()
 		case 2:
 			c.Multiply()
-		// case 3: c.PutInput()
-		// case 4: c.PutOutput()
-		// case 5: c.JumpIfTrue()
-		// case 6: c.JumpIfFalse()
-		// case 7: c.LessThan()
-		// case 8: c.Equals()
-		// case 9: c.RelativeBaseOffset()
+		case 3:
+			c.PutInput()
+		case 4:
+			c.PutOutput()
+		case 5:
+			c.JumpIfTrue()
+		case 6:
+			c.JumpIfFalse()
+		case 7:
+			c.LessThan()
+		case 8:
+			c.Equals()
+		case 9:
+			c.RelativeBaseOffset()
 		case 99:
 			break loop // self explanatory, break the loop created above
 		}
@@ -89,7 +96,6 @@ func (c *Computer) Add() {
 	c.Write(a+b, (c.instruction/10000)%10)
 }
 
-// multiply 2 values, write them to memory
 func (c *Computer) Multiply() {
 	a := c.Read((c.instruction / 100) % 10)
 	b := c.Read((c.instruction / 1000) % 10)
@@ -97,6 +103,65 @@ func (c *Computer) Multiply() {
 	c.Write(a*b, (c.instruction/10000)%10)
 }
 
+func (c *Computer) PutInput() {
+	in := <-c.input
+	c.Write(in, (c.instruction/100)%10)
+}
+
+func (c *Computer) GetInput() chan int {
+	return c.input
+}
+
+func (c *Computer) PutOutput() {
+	out := c.Read((c.instruction / 100) % 10)
+	c.output <- out
+}
+
+func (c *Computer) GetOutput() chan int {
+	return c.output
+}
+
 func (c *Computer) GetMemory() *[]int {
 	return c.memory
+}
+
+func (c *Computer) JumpIfTrue() {
+	test := c.Read((c.instruction / 100) % 10)
+	newPointer := c.Read((c.instruction / 1000) % 10)
+	if test != 0 {
+		c.pointer = newPointer
+	}
+}
+
+func (c *Computer) JumpIfFalse() {
+	test := c.Read((c.instruction / 100) % 10)
+	newPointer := c.Read((c.instruction / 1000) % 10)
+	if test == 0 {
+		c.pointer = newPointer
+	}
+}
+
+func (c *Computer) LessThan() {
+	a := c.Read((c.instruction / 100) % 10)
+	b := c.Read((c.instruction / 1000) % 10)
+	if a < b {
+		c.Write(1, (c.instruction/10000)%10)
+	} else {
+		c.Write(0, (c.instruction/10000)%10)
+	}
+}
+
+func (c *Computer) Equals() {
+	a := c.Read((c.instruction / 100) % 10)
+	b := c.Read((c.instruction / 1000) % 10)
+	if a == b {
+		c.Write(1, (c.instruction/10000)%10)
+	} else {
+		c.Write(0, (c.instruction/10000)%10)
+	}
+}
+
+func (c *Computer) RelativeBaseOffset() {
+	offset := c.Read((c.instruction / 100) % 10)
+	c.relativeBase += offset
 }
