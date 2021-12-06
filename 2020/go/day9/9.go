@@ -1,18 +1,31 @@
-package main
+package day9
 
 import (
-	"fmt"
 	"io/ioutil"
 	"sort"
 	"strconv"
 	"strings"
 )
 
-func main() {
-	input, _ := ioutil.ReadFile("2020/input/9")
-	tmp := strings.Split(strings.TrimSpace(string(input)), "\n")
+var filename = "2020/input/9"
+
+func Part1() int {
+	return puzzle(input(filename), false)
+}
+
+func Part2() int {
+	return puzzle(input(filename), true)
+}
+
+func input(file string) []string {
+	input, _ := ioutil.ReadFile(file)
+	output := strings.Split(strings.TrimSpace(string(input)), "\n")
+	return output
+}
+
+func puzzle(input []string, part2 bool) int {
 	xmas := []int{}
-	for _, s := range tmp {
+	for _, s := range input {
 		v, _ := strconv.Atoi(s)
 		xmas = append(xmas, v)
 	}
@@ -32,8 +45,10 @@ func main() {
 		}
 		if !valid[data] {
 			invalid = data
-			fmt.Println("Part 1:", data)
-			break
+			if part2 {
+				break
+			}
+			return data
 		}
 	}
 	for low, x := range xmas {
@@ -47,9 +62,9 @@ func main() {
 				break
 			} else if total == invalid {
 				sort.Ints(xmas[low : high+1])
-				fmt.Println("Part 2:", xmas[low]+xmas[high])
-				return
+				return xmas[low] + xmas[high]
 			}
 		}
 	}
+	return 0
 }

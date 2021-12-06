@@ -1,19 +1,32 @@
-package main
+package day13
 
 import (
-	"fmt"
 	"io/ioutil"
 	"math"
 	"strconv"
 	"strings"
 )
 
-func main() {
-	input, _ := ioutil.ReadFile("2020/input/13")
-	in := strings.Split(strings.TrimSpace(string(input)), "\n")
-	timestamp, _ := strconv.Atoi(in[0])
+var filename = "2020/input/13"
+
+func Part1() int {
+	return puzzle(input(filename), false)
+}
+
+func Part2() int {
+	return puzzle(input(filename), true)
+}
+
+func input(file string) []string {
+	input, _ := ioutil.ReadFile(file)
+	output := strings.Split(strings.TrimSpace(string(input)), "\n")
+	return output
+}
+
+func puzzle(input []string, part2 bool) int {
+	timestamp, _ := strconv.Atoi(input[0])
 	bus, wait, ts, increment := math.MaxInt64, 0, 0, 1
-	for i, s := range strings.Split(in[1], ",") {
+	for i, s := range strings.Split(input[1], ",") {
 		id, err := strconv.Atoi(s)
 		if err != nil {
 			continue
@@ -29,6 +42,8 @@ func main() {
 		}
 		increment *= id // set timestamp increment to current increment multiplied by current bus id
 	}
-	fmt.Println("Part 1:", bus*wait)
-	fmt.Println("Part 2:", ts)
+	if part2 {
+		return ts
+	}
+	return bus * wait
 }

@@ -1,11 +1,44 @@
-package main
+package day11
 
 import (
-	"fmt"
 	"image"
 	"io/ioutil"
 	"strings"
 )
+
+var filename = "2020/input/11"
+
+func Part1() int {
+	return puzzle(input(filename), false)
+}
+
+func Part2() int {
+	return puzzle(input(filename), true)
+}
+
+func input(file string) []string {
+	input, _ := ioutil.ReadFile(file)
+	output := strings.Split(strings.TrimSpace(string(input)), "\n")
+	return output
+}
+
+func puzzle(input []string, part2 bool) int {
+	seats := map[image.Point]rune{}
+	for y, row := range input {
+		for x, rune := range row {
+			seats[image.Point{x, y}] = rune
+		}
+	}
+	if part2 {
+		return sim(seats, 5, func(a, b image.Point) image.Point {
+			for seats[a.Add(b)] == '.' {
+				a = a.Add(b)
+			}
+			return a.Add(b)
+		})
+	}
+	return sim(seats, 4, func(a, b image.Point) image.Point { return a.Add(b) })
+}
 
 func sim(seats map[image.Point]rune, spookFactor int, adjacent func(a, b image.Point) image.Point) int {
 	adjacentSeats := []image.Point{
@@ -41,23 +74,5 @@ func sim(seats map[image.Point]rune, spookFactor int, adjacent func(a, b image.P
 		}
 		seats = new_seats
 	}
-	fmt.Println("Iterations:", iter)
 	return occupiedSeats
-}
-
-func main() {
-	input, _ := ioutil.ReadFile("2020/input/11")
-	seats := map[image.Point]rune{}
-	for y, row := range strings.Split(strings.TrimSpace(string(input)), "\n") {
-		for x, rune := range row {
-			seats[image.Point{x, y}] = rune
-		}
-	}
-	fmt.Println("Part 1:", sim(seats, 4, func(a, b image.Point) image.Point { return a.Add(b) }))
-	fmt.Println("Part 2:", sim(seats, 5, func(a, b image.Point) image.Point {
-		for seats[a.Add(b)] == '.' {
-			a = a.Add(b)
-		}
-		return a.Add(b)
-	}))
 }
