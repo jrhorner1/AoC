@@ -1,11 +1,26 @@
-package main
+package day4
 
 import (
-	"fmt"
 	"io/ioutil"
 	"regexp"
 	"strings"
 )
+
+var filename = "2020/input/4"
+
+func Part1() int {
+	return puzzle(input(filename), false)
+}
+
+func Part2() int {
+	return puzzle(input(filename), true)
+}
+
+func input(file string) []string {
+	input, _ := ioutil.ReadFile(file)
+	output := strings.Split(strings.TrimSpace(string(input)), "\n\n")
+	return output
+}
 
 var regs = []*regexp.Regexp{
 	regexp.MustCompile(`(?:^|\s)(byr):(?:(19[2-9]\d|200[0-2])(?:\s|$))?`),
@@ -16,10 +31,9 @@ var regs = []*regexp.Regexp{
 	regexp.MustCompile(`(?:^|\s)(ecl):(?:(amb|blu|brn|gry|grn|hzl|oth)(?:\s|$))?`),
 	regexp.MustCompile(`(?:^|\s)(pid):(?:(\d{9})(?:\s|$))?`)}
 
-func main() {
-	input, _ := ioutil.ReadFile("2020/input/4")
+func puzzle(input []string, part2 bool) int {
 	p1, p2 := 0, 0
-	for _, pp := range strings.Split(strings.TrimSpace(string(input)), "\n\n") {
+	for _, pp := range input {
 		d1, d2 := 1, 1
 		for _, reg := range regs {
 			if m := reg.FindStringSubmatch(pp); len(m) == 0 {
@@ -30,6 +44,8 @@ func main() {
 		}
 		p1, p2 = p1+d1, p2+d2
 	}
-	fmt.Println("Part 1:", p1)
-	fmt.Println("Part 2:", p2)
+	if part2 {
+		return p2
+	}
+	return p1
 }

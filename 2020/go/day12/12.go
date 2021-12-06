@@ -1,4 +1,4 @@
-package main
+package day12
 
 import (
 	"fmt"
@@ -8,10 +8,33 @@ import (
 	"strings"
 )
 
+var filename = "2020/input/12"
+
+func Part1() int {
+	return puzzle(input(filename), false)
+}
+
+func Part2() int {
+	return puzzle(input(filename), true)
+}
+
+func input(file string) []string {
+	input, _ := ioutil.ReadFile(file)
+	output := strings.Split(strings.TrimSpace(string(input)), "\n")
+	return output
+}
+
+func puzzle(input []string, part2 bool) int {
+	ship, neoship, waypoint := image.Point{0, 0}, image.Point{0, 0}, image.Point{10, -1}
+	if part2 {
+		return navigate(input, &neoship, &waypoint, &waypoint)
+	}
+	return navigate(input, &ship, &image.Point{1, 0}, &ship)
+}
+
 func navigate(in []string, ship, facing, move *image.Point) int {
 	action := map[rune]image.Point{'N': {0, -1}, 'E': {1, 0}, 'W': {-1, 0}, 'S': {0, 1}, 'L': {-1, 1}, 'R': {1, -1}}
 	for i, s := range in {
-		fmt.Println(ship, facing)
 		var dir rune
 		var val int
 		fmt.Sscanf(s, "%c%d", &dir, &val)
@@ -27,13 +50,4 @@ func navigate(in []string, ship, facing, move *image.Point) int {
 		}
 	}
 	return int(math.Abs(float64(ship.X)) + math.Abs(float64(ship.Y)))
-}
-
-func main() {
-	input, _ := ioutil.ReadFile("2020/input/12")
-	in := strings.Split(strings.TrimSpace(string(input)), "\n")
-	ship, neoship, waypoint := image.Point{0, 0}, image.Point{0, 0}, image.Point{10, -1}
-
-	fmt.Println("Part 1:", navigate(in, &ship, &image.Point{1, 0}, &ship))
-	fmt.Println("Part 2:", navigate(in, &neoship, &waypoint, &waypoint))
 }
