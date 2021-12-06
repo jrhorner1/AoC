@@ -1,4 +1,4 @@
-package day01
+package day1
 
 import (
 	"io/ioutil"
