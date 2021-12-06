@@ -3,9 +3,9 @@
 This is a repo for my [Advent of Code](https://adventofcode.com) attempts.
 
 ### Solutions
-Puzzle solutions are meant to be run from the root of the repo. 
+Puzzle solutions are meant to be run from the root of the repo. Without any arguments it will run the solution for the current day and year. 
 ```bash
-go run 2021/solutions/1.go
+go run main.go -y 2015 -d 2
 ```
 
 ### Utilities
