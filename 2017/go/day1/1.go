@@ -1,18 +1,31 @@
-package main
+package day1
 
 import (
-	"fmt"
 	"io/ioutil"
 	"strconv"
 	"strings"
 )
 
-func main() {
-	input, _ := ioutil.ReadFile("2017/input/1")
-	in := strings.TrimSpace(string(input))
+var filename = "2017/input/1"
+
+func Part1() int {
+	return Puzzle(Input(filename), false)
+}
+
+func Part2() int {
+	return Puzzle(Input(filename), true)
+}
+
+func Input(file string) string {
+	input, _ := ioutil.ReadFile(file)
+	output := strings.TrimSpace(string(input))
+	return output
+}
+
+func Puzzle(input string, part2 bool) int {
 	digits := []int{}
 	// convert all of the digits into integers to make it easier to work with
-	for _, d := range in {
+	for _, d := range input {
 		digit, _ := strconv.Atoi(string(d))
 		digits = append(digits, digit)
 	}
@@ -34,6 +47,8 @@ func main() {
 			}
 		}
 	}
-	fmt.Println("Part 1:", adjacentSum)
-	fmt.Println("Part 2:", halfwaySum)
+	if part2 {
+		return halfwaySum
+	}
+	return adjacentSum
 }

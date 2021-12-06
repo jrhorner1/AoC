@@ -1,18 +1,31 @@
-package main
+package day2
 
 import (
-	"fmt"
 	"io/ioutil"
 	"sort"
 	"strconv"
 	"strings"
 )
 
-func main() {
-	input, _ := ioutil.ReadFile("2017/input/2")
-	in := strings.Split(strings.TrimSpace(string(input)), "\n")
+var filename = "2017/input/2"
+
+func Part1() int {
+	return Puzzle(Input(filename), false)
+}
+
+func Part2() int {
+	return Puzzle(Input(filename), true)
+}
+
+func Input(file string) []string {
+	input, _ := ioutil.ReadFile(file)
+	output := strings.Split(strings.TrimSpace(string(input)), "\n")
+	return output
+}
+
+func Puzzle(input []string, part2 bool) int {
 	diffs, divs := []int{}, []int{}
-	for _, row := range in {
+	for _, row := range input {
 		fields := strings.Fields(row)
 		intFields := []int{}
 		for _, field := range fields {
@@ -33,14 +46,14 @@ func main() {
 		}
 	}
 	checksum := 0
+	if part2 {
+		for _, div := range divs {
+			checksum += div
+		}
+		return checksum
+	}
 	for _, diff := range diffs {
 		checksum += diff
 	}
-	fmt.Println("Part 1:", checksum)
-
-	checksum = 0
-	for _, div := range divs {
-		checksum += div
-	}
-	fmt.Println("Part 2:", checksum)
+	return checksum
 }
