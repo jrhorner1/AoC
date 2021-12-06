@@ -1,37 +1,34 @@
-package y21
+package y18
 
-import (
-	"fmt"
-
-	"github.com/jrhorner1/AoC/2021/go/day1"
-	"github.com/jrhorner1/AoC/2021/go/day2"
-	"github.com/jrhorner1/AoC/2021/go/day3"
-	"github.com/jrhorner1/AoC/2021/go/day4"
-	"github.com/jrhorner1/AoC/2021/go/day5"
-)
+import "fmt"
 
 func Run(day *int) {
 	switch *day {
 	case 1:
-		fmt.Println("\tDay 1 solutions")
-		fmt.Println("Part 1:", day1.Part1())
-		fmt.Println("Part 2:", day1.Part2())
+		panic("unimplemented")
+		// fmt.Println("\tDay 1 solutions")
+		// fmt.Println("Part 1:", day1.Part1())
+		// fmt.Println("Part 2:", day1.Part2())
 	case 2:
-		fmt.Println("\tDay 2 solutions")
-		fmt.Println("Part 1:", day2.Part1())
-		fmt.Println("Part 2:", day2.Part2())
+		panic("unimplemented")
+		// fmt.Println("\tDay 2 solutions")
+		// fmt.Println("Part 1:", day2.Part1())
+		// fmt.Println("Part 2:", day2.Part2())
 	case 3:
-		fmt.Println("\tDay 3 solutions")
-		fmt.Println("Part 1:", day3.Part1())
-		fmt.Println("Part 2:", day3.Part2())
+		panic("unimplemented")
+		// fmt.Println("\tDay 3 solutions")
+		// fmt.Println("Part 1:", day3.Part1())
+		// fmt.Println("Part 2:", day3.Part2())
 	case 4:
-		fmt.Println("\tDay 4 solutions")
-		fmt.Println("Part 1:", day4.Part1())
-		fmt.Println("Part 2:", day4.Part2())
+		panic("unimplemented")
+		// fmt.Println("\tDay 4 solutions")
+		// fmt.Println("Part 1:", day4.Part1())
+		// fmt.Println("Part 2:", day4.Part2())
 	case 5:
-		fmt.Println("\tDay 5 solutions")
-		fmt.Println("Part 1:", day5.Part1())
-		fmt.Println("Part 2:", day5.Part2())
+		panic("unimplemented")
+		// fmt.Println("\tDay 5 solutions")
+		// fmt.Println("Part 1:", day5.Part1())
+		// fmt.Println("Part 2:", day5.Part2())
 	case 6:
 		panic("unimplemented")
 		// fmt.Println("\tDay 6 solutions")

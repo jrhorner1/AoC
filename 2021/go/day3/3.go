@@ -1,28 +1,40 @@
-package main
+package day3
 
 import (
-	"fmt"
 	"io/ioutil"
 	"math"
 	"strconv"
 	"strings"
 )
 
-func main() {
-	input, _ := ioutil.ReadFile("2021/input/3")
-	diag := strings.Split(strings.TrimSpace(string(input)), "\n")
+var filename = "2021/input/3"
 
+func Part1() int {
+	return Puzzle(Input(filename), false)
+}
+
+func Part2() int {
+	return Puzzle(Input(filename), true)
+}
+
+func Input(file string) []string {
+	input, _ := ioutil.ReadFile(file)
+	output := strings.Split(strings.TrimSpace(string(input)), "\n")
+	return output
+}
+
+func Puzzle(input []string, part2 bool) int {
 	var bitSums []int
-	for i := 0; i < len(diag[0]); i++ { // loop through each column of bits
+	for i := 0; i < len(input[0]); i++ { // loop through each column of bits
 		bitSums = append(bitSums, 0)
-		for _, row := range diag {
+		for _, row := range input {
 			// convert the bit to its ascii value and subtract the ascii value of 0 to get a integer 1 or 0
 			bitSums[i] += int(row[i]) - int('0')
 		}
 	}
 	var gammaRate, epsilonRate int
 	for i, sum := range bitSums {
-		if sum > len(diag)/2 { // if the bit sum is greater than half of all rows, '1' is the most common bit
+		if sum > len(input)/2 { // if the bit sum is greater than half of all rows, '1' is the most common bit
 			// use base 2 positional notation to convert from binary to decimal
 			// https://en.wikipedia.org/wiki/Binary_number#Decimal
 			gammaRate += int(math.Pow(2, float64(len(bitSums)-1-i)))
@@ -30,13 +42,12 @@ func main() {
 			epsilonRate += int(math.Pow(2, float64(len(bitSums)-1-i)))
 		}
 	}
-	fmt.Println("Part 1:", gammaRate*epsilonRate)
-
-	oxyGenRating := getRating(diag, true, 0)
-	co2ScrubRating := getRating(diag, false, 0)
-	fmt.Println("Part 2:", oxyGenRating*co2ScrubRating)
-
-	fmt.Println("Happy Holidays 2021!")
+	if part2 {
+		oxyGenRating := getRating(input, true, 0)
+		co2ScrubRating := getRating(input, false, 0)
+		return oxyGenRating * co2ScrubRating
+	}
+	return gammaRate * epsilonRate
 }
 
 func getRating(data []string, majority bool, index int) int {

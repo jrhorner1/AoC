@@ -6,6 +6,16 @@ import (
 	"strings"
 )
 
+var filename = "2021/input/1"
+
+func Part1() int {
+	return DepthScan(Input(filename), false)
+}
+
+func Part2() int {
+	return DepthScan(Input(filename), true)
+}
+
 func Input(file string) []int {
 	input, _ := ioutil.ReadFile(file)
 	in := strings.Split(strings.TrimSpace(string(input)), "\n")
@@ -43,12 +53,4 @@ func DepthScan(depths []int, sliding bool) int {
 		}
 	}
 	return increase
-}
-
-func Part1() int {
-	return DepthScan(Input("2021/input/1"), false)
-}
-
-func Part2() int {
-	return DepthScan(Input("2021/input/1"), true)
 }
