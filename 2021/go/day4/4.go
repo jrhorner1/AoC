@@ -1,12 +1,27 @@
-package main
+package day4
 
 import (
-	"fmt"
 	"io/ioutil"
 	"math"
 	"strconv"
 	"strings"
 )
+
+var filename = "2021/input/4"
+
+func Part1() int {
+	return Puzzle(Input(filename), false)
+}
+
+func Part2() int {
+	return Puzzle(Input(filename), true)
+}
+
+func Input(file string) []string {
+	input, _ := ioutil.ReadFile(file)
+	output := strings.Split(strings.TrimSpace(string(input)), "\n\n")
+	return output
+}
 
 type bingoSquare struct {
 	number int
@@ -20,18 +35,15 @@ type bingoBoard struct {
 	score   int
 }
 
-func main() {
-	input, _ := ioutil.ReadFile("2021/input/4")
-	// input, _ := ioutil.ReadFile("2021/examples/4")
-	in := strings.Split(strings.TrimSpace(string(input)), "\n\n") // split on double newline to get each board into a single string
-	splitStrings := strings.Split(in[0], ",")
+func Puzzle(input []string, part2 bool) int {
+	splitStrings := strings.Split(input[0], ",")
 	numbers := []int{}
 	for _, s := range splitStrings {
 		number, _ := strconv.Atoi(s)
 		numbers = append(numbers, number)
 	}
 	boards := []bingoBoard{}
-	for id, boardString := range in[1:] {
+	for id, boardString := range input[1:] {
 		board := bingoBoard{[]bingoSquare{}, id, 0, 0}
 		for _, rowString := range strings.Split(strings.TrimSpace(string(boardString)), "\n") {
 			numberStrings := strings.Fields(rowString)
@@ -76,9 +88,10 @@ func main() {
 			last = boards[i]
 		}
 	}
-	fmt.Println("Part 1:", first.score)
-	fmt.Println("Part 2:", last.score)
-	fmt.Println("Happy Holidays 2021!")
+	if part2 {
+		return last.score
+	}
+	return first.score
 }
 
 func checkRowBingo(board *bingoBoard) bool {

@@ -1,7 +1,6 @@
-package main
+package day2
 
 import (
-	"fmt"
 	"io/ioutil"
 	"strconv"
 	"strings"
@@ -9,17 +8,31 @@ import (
 	geo "github.com/jrhorner1/AoC/pkg/math/geometry"
 )
 
+var filename = "2021/input/2"
+
 type submarine struct {
 	location geo.Point
 	aim      int
 }
 
-func main() {
-	input, _ := ioutil.ReadFile("2021/input/2")
-	in := strings.Split(strings.TrimSpace(string(input)), "\n")
+func Part1() int {
+	return Puzzle(Input(filename), false)
+}
+
+func Part2() int {
+	return Puzzle(Input(filename), true)
+}
+
+func Input(file string) []string {
+	input, _ := ioutil.ReadFile(file)
+	output := strings.Split(strings.TrimSpace(string(input)), "\n")
+	return output
+}
+
+func Puzzle(input []string, part2 bool) int {
 	p1 := submarine{geo.Point{0, 0}, 0}
 	p2 := submarine{geo.Point{0, 0}, 0}
-	for _, i := range in {
+	for _, i := range input {
 		instruction := strings.Fields(i)
 		direction := instruction[0]
 		distance, _ := strconv.Atoi(instruction[1])
@@ -33,12 +46,10 @@ func main() {
 		} else if direction == "down" {
 			p1.location.Y += distance // move deeper
 			p2.aim += distance        // adjust aim downward
-		} else {
-			fmt.Println("Unknown direction")
 		}
 	}
-
-	fmt.Println("Part 1:", p1.location.X*p1.location.Y)
-	fmt.Println("Part 2:", p2.location.X*p2.location.Y)
-	fmt.Println("Happy Holidays 2021!")
+	if part2 {
+		return p2.location.X * p2.location.Y
+	}
+	return p1.location.X * p1.location.Y
 }
