@@ -8,6 +8,26 @@ import (
 	"github.com/jrhorner1/AoC/2021/go/day3"
 	"github.com/jrhorner1/AoC/2021/go/day4"
 	"github.com/jrhorner1/AoC/2021/go/day5"
+	"github.com/jrhorner1/AoC/2021/go/day6"
+	// "github.com/jrhorner1/AoC/2021/go/day7"
+	// "github.com/jrhorner1/AoC/2021/go/day8"
+	// "github.com/jrhorner1/AoC/2021/go/day9"
+	// "github.com/jrhorner1/AoC/2021/go/day10"
+	// "github.com/jrhorner1/AoC/2021/go/day11"
+	// "github.com/jrhorner1/AoC/2021/go/day12"
+	// "github.com/jrhorner1/AoC/2021/go/day13"
+	// "github.com/jrhorner1/AoC/2021/go/day14"
+	// "github.com/jrhorner1/AoC/2021/go/day15"
+	// "github.com/jrhorner1/AoC/2021/go/day16"
+	// "github.com/jrhorner1/AoC/2021/go/day17"
+	// "github.com/jrhorner1/AoC/2021/go/day18"
+	// "github.com/jrhorner1/AoC/2021/go/day19"
+	// "github.com/jrhorner1/AoC/2021/go/day20"
+	// "github.com/jrhorner1/AoC/2021/go/day21"
+	// "github.com/jrhorner1/AoC/2021/go/day22"
+	// "github.com/jrhorner1/AoC/2021/go/day23"
+	// "github.com/jrhorner1/AoC/2021/go/day24"
+	// "github.com/jrhorner1/AoC/2021/go/day25"
 )
 
 func Run(day *int) {
@@ -33,10 +53,9 @@ func Run(day *int) {
 		fmt.Println("Part 1:", day5.Part1())
 		fmt.Println("Part 2:", day5.Part2())
 	case 6:
-		panic("unimplemented")
-		// fmt.Println("\tDay 6 solutions")
-		// fmt.Println("Part 1:", day6.Part1())
-		// fmt.Println("Part 2:", day6.Part2())
+		fmt.Println("\tDay 6 solutions")
+		fmt.Println("Part 1:", day6.Part1())
+		fmt.Println("Part 2:", day6.Part2())
 	case 7:
 		panic("unimplemented")
 		// fmt.Println("\tDay 7 solutions")
