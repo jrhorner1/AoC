@@ -1,33 +1,16 @@
 package day5
 
 import (
-	"io/ioutil"
 	"strconv"
 	"strings"
 
 	geom "github.com/jrhorner1/AoC/pkg/math/geometry"
 )
 
-var filename = "2021/input/5"
-
-func Part1() int {
-	return Puzzle(Input(filename), false)
-}
-
-func Part2() int {
-	return Puzzle(Input(filename), true)
-}
-
-func Input(file string) []string {
-	input, _ := ioutil.ReadFile(file)
-	output := strings.Split(strings.TrimSpace(string(input)), "\n")
-	return output
-}
-
-func Puzzle(input []string, part2 bool) int {
+func Puzzle(input *[]byte, part2 bool) int {
 	dangerZoneHV := make(map[geom.Point]int)
 	dangerZoneHVD := make(map[geom.Point]int)
-	for _, i := range input {
+	for _, i := range strings.Split(strings.TrimSpace(string(*input)), "\n") {
 		points := strings.Split(strings.TrimSpace(i), "->")
 		a := parsePoint(strings.Split(strings.TrimSpace(points[0]), ","))
 		b := parsePoint(strings.Split(strings.TrimSpace(points[1]), ","))

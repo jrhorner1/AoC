@@ -2,15 +2,27 @@ package day9
 
 import (
 	"fmt"
+	"io/ioutil"
 	"strconv"
+	"strings"
 	"testing"
 
 	"github.com/jrhorner1/AoC/pkg/intcode"
 )
 
+func parseInput(filename string) []int {
+	input, _ := ioutil.ReadFile(filename)
+	var program []int
+	for _, i := range strings.Split(strings.TrimSpace(string(input)), ",") {
+		out, _ := strconv.Atoi(i)
+		program = append(program, out)
+	}
+	return program
+}
+
 func TestExample1(t *testing.T) {
 	filename := "2019/examples/9.1"
-	program := Input(filename)
+	program := parseInput(filename)
 	computer := intcode.NewComputer(&program)
 	go computer.Run()
 
@@ -37,7 +49,7 @@ func TestExample1(t *testing.T) {
 
 func TestExample2(t *testing.T) {
 	filename := "2019/examples/9.2"
-	program := Input(filename)
+	program := parseInput(filename)
 	computer := intcode.NewComputer(&program)
 	go computer.Run()
 	var example2 int
@@ -53,7 +65,7 @@ func TestExample2(t *testing.T) {
 
 func TestExample3(t *testing.T) {
 	filename := "2019/examples/9.3"
-	program := Input(filename)
+	program := parseInput(filename)
 	computer := intcode.NewComputer(&program)
 	go computer.Run()
 	var example3 int

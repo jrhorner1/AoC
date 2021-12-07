@@ -2,38 +2,22 @@ package day8
 
 import (
 	"fmt"
-	"io/ioutil"
 	"strings"
 )
-
-var filename = "2019/input/8"
-
-func Part1() int {
-	return puzzle(input(filename), false)
-}
-
-func Part2() {
-	puzzle(input(filename), true)
-}
-
-func input(file string) string {
-	input, _ := ioutil.ReadFile(file)
-	output := strings.TrimSpace(string(input))
-	return output
-}
 
 const (
 	x int = 25
 	y int = 6
 )
 
-func puzzle(input string, part2 bool) int {
+func Puzzle(input *[]byte, part2 bool) int {
+	in := strings.TrimSpace(string(*input))
 	var layers [][]int
 
 	adv := x * y
-	for i := 0; i < len(input); i += adv {
+	for i := 0; i < len(in); i += adv {
 		var layer []int
-		layerString := input[i : i+adv]
+		layerString := in[i : i+adv]
 		for _, r := range layerString {
 			layer = append(layer, int(r)-48)
 		}

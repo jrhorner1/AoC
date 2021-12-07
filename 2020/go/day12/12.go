@@ -3,33 +3,17 @@ package day12
 import (
 	"fmt"
 	"image"
-	"io/ioutil"
 	"math"
 	"strings"
 )
 
-var filename = "2020/input/12"
-
-func Part1() int {
-	return puzzle(input(filename), false)
-}
-
-func Part2() int {
-	return puzzle(input(filename), true)
-}
-
-func input(file string) []string {
-	input, _ := ioutil.ReadFile(file)
-	output := strings.Split(strings.TrimSpace(string(input)), "\n")
-	return output
-}
-
-func puzzle(input []string, part2 bool) int {
+func Puzzle(input *[]byte, part2 bool) int {
+	in := strings.Split(strings.TrimSpace(string(*input)), "\n")
 	ship, neoship, waypoint := image.Point{0, 0}, image.Point{0, 0}, image.Point{10, -1}
 	if part2 {
-		return navigate(input, &neoship, &waypoint, &waypoint)
+		return navigate(in, &neoship, &waypoint, &waypoint)
 	}
-	return navigate(input, &ship, &image.Point{1, 0}, &ship)
+	return navigate(in, &ship, &image.Point{1, 0}, &ship)
 }
 
 func navigate(in []string, ship, facing, move *image.Point) int {

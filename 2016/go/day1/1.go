@@ -1,7 +1,6 @@
 package day1
 
 import (
-	"io/ioutil"
 	"strconv"
 	"strings"
 
@@ -9,27 +8,11 @@ import (
 	geom "github.com/jrhorner1/AoC/pkg/math/geometry"
 )
 
-var filename = "2017/input/1"
-
-func Part1() int {
-	return Puzzle(Input(filename), false)
-}
-
-func Part2() int {
-	return Puzzle(Input(filename), true)
-}
-
-func Input(file string) []string {
-	input, _ := ioutil.ReadFile(file)
-	output := strings.Split(strings.TrimSpace(string(input)), ", ")
-	return output
-}
-
-func Puzzle(input []string, part2 bool) int {
+func Puzzle(input *[]byte, part2 bool) int {
 	path := []geom.Point{{0, 0}} // origin point
 	facing := 'N'                // start off facing North
 	position := geom.Point{0, 0}
-	for _, d := range input {
+	for _, d := range strings.Split(strings.TrimSpace(string(*input)), ", ") {
 		direction := d[0]
 		distance, _ := strconv.Atoi(d[1:])
 		switch direction {

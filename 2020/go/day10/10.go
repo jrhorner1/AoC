@@ -1,32 +1,15 @@
 package day10
 
 import (
-	"io/ioutil"
 	"sort"
 	"strconv"
 	"strings"
 )
 
-var filename = "2020/input/10"
-
-func Part1() int {
-	return puzzle(input(filename), false)
-}
-
-func Part2() int {
-	return puzzle(input(filename), true)
-}
-
-func input(file string) []string {
-	input, _ := ioutil.ReadFile(file)
-	output := strings.Split(strings.TrimSpace(string(input)), "\n")
-	return output
-}
-
-func puzzle(input []string, part2 bool) int {
+func Puzzle(input *[]byte, part2 bool) int {
 	jolts := []int{0}
 	diffs := map[int]int{}
-	for _, i := range input {
+	for _, i := range strings.Split(strings.TrimSpace(string(*input)), "\n") {
 		adapter, _ := strconv.Atoi(i)
 		jolts = append(jolts, adapter)
 	}

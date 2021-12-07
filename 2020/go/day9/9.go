@@ -1,31 +1,14 @@
 package day9
 
 import (
-	"io/ioutil"
 	"sort"
 	"strconv"
 	"strings"
 )
 
-var filename = "2020/input/9"
-
-func Part1() int {
-	return puzzle(input(filename), false)
-}
-
-func Part2() int {
-	return puzzle(input(filename), true)
-}
-
-func input(file string) []string {
-	input, _ := ioutil.ReadFile(file)
-	output := strings.Split(strings.TrimSpace(string(input)), "\n")
-	return output
-}
-
-func puzzle(input []string, part2 bool) int {
+func Puzzle(input *[]byte, part2 bool) int {
 	xmas := []int{}
-	for _, s := range input {
+	for _, s := range strings.Split(strings.TrimSpace(string(*input)), "\n") {
 		v, _ := strconv.Atoi(s)
 		xmas = append(xmas, v)
 	}

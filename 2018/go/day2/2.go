@@ -1,30 +1,14 @@
 package day2
 
 import (
-	"io/ioutil"
 	"strconv"
 	"strings"
 )
 
-var filename = "2018/input/2"
-
-func Part1() int {
-	return Puzzle(Input(filename), false)
-}
-
-func Part2() int {
-	return Puzzle(Input(filename), true)
-}
-
-func Input(file string) []string {
-	input, _ := ioutil.ReadFile(file)
-	output := strings.Split(strings.TrimSpace(string(input)), "\n")
-	return output
-}
-
-func Puzzle(input []string, part2 bool) int {
+func Puzzle(input *[]byte, part2 bool) int {
+	in := strings.Split(strings.TrimSpace(string(*input)), "\n")
 	count2, count3 := 0, 0
-	for _, id := range input {
+	for _, id := range in {
 		chars := make(map[rune]int)
 		for _, char := range id {
 			chars[char] += 1
@@ -46,8 +30,8 @@ func Puzzle(input []string, part2 bool) int {
 		}
 	}
 	if part2 {
-		for i, idA := range input {
-			for j, idB := range input {
+		for i, idA := range in {
+			for j, idB := range in {
 				if i == j {
 					continue
 				}

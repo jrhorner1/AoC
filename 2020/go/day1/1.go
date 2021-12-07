@@ -1,31 +1,15 @@
 package day1
 
 import (
-	"io/ioutil"
 	"strconv"
 	"strings"
 )
 
-var filename = "2020/input/1"
-
-func Part1() int {
-	return puzzle(input(filename), false)
-}
-
-func Part2() int {
-	return puzzle(input(filename), true)
-}
-
-func input(file string) []string {
-	input, _ := ioutil.ReadFile(file)
-	output := strings.Split(strings.TrimSpace(string(input)), "\n")
-	return output
-}
-
-func puzzle(input []string, part2 bool) int {
+func Puzzle(input *[]byte, part2 bool) int {
+	in := strings.Split(strings.TrimSpace(string(*input)), "\n")
 	var entries []int
-	for i := 0; i < len(input); i++ {
-		tmp, _ := strconv.Atoi(input[i])
+	for i := 0; i < len(in); i++ {
+		tmp, _ := strconv.Atoi(in[i])
 		entries = append(entries, tmp)
 	}
 	for i, x := range entries {

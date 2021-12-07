@@ -1,32 +1,16 @@
 package day3
 
 import (
-	"io/ioutil"
 	"strconv"
 	"strings"
 
 	geom "github.com/jrhorner1/AoC/pkg/math/geometry"
 )
 
-var filename = "2019/input/3"
-
-func Part1() int {
-	return puzzle(input(filename), false)
-}
-
-func Part2() int {
-	return puzzle(input(filename), true)
-}
-
-func input(file string) []string {
-	input, _ := ioutil.ReadFile(file)
-	output := strings.Split(strings.TrimSpace(string(input)), "\n")
-	return output
-}
-
-func puzzle(input []string, part2 bool) int {
-	redWire := getPath(strings.Split(strings.TrimSpace(string(input[0])), ","))
-	greenWire := getPath(strings.Split(strings.TrimSpace(string(input[1])), ","))
+func Puzzle(input *[]byte, part2 bool) int {
+	in := strings.Split(strings.TrimSpace(string(*input)), "\n")
+	redWire := getPath(strings.Split(strings.TrimSpace(string(in[0])), ","))
+	greenWire := getPath(strings.Split(strings.TrimSpace(string(in[1])), ","))
 	if part2 {
 		return getBestDistance(false, &redWire, &greenWire)
 	}
