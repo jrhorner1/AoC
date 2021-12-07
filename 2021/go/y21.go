@@ -9,7 +9,7 @@ import (
 	"github.com/jrhorner1/AoC/2021/go/day4"
 	"github.com/jrhorner1/AoC/2021/go/day5"
 	"github.com/jrhorner1/AoC/2021/go/day6"
-	// "github.com/jrhorner1/AoC/2021/go/day7"
+	"github.com/jrhorner1/AoC/2021/go/day7"
 	// "github.com/jrhorner1/AoC/2021/go/day8"
 	// "github.com/jrhorner1/AoC/2021/go/day9"
 	// "github.com/jrhorner1/AoC/2021/go/day10"
@@ -57,10 +57,9 @@ func Run(day *int) {
 		fmt.Println("Part 1:", day6.Part1())
 		fmt.Println("Part 2:", day6.Part2())
 	case 7:
-		panic("unimplemented")
-		// fmt.Println("\tDay 7 solutions")
-		// fmt.Println("Part 1:", day7.Part1())
-		// fmt.Println("Part 2:", day7.Part2())
+		fmt.Println("\tDay 7 solutions")
+		fmt.Println("Part 1:", day7.Part1())
+		fmt.Println("Part 2:", day7.Part2())
 	case 8:
 		panic("unimplemented")
 		// fmt.Println("\tDay 8 solutions")
