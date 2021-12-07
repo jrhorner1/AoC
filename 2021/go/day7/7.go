@@ -2,74 +2,69 @@ package day7
 
 import (
 	"io/ioutil"
+	"math"
+	"sort"
 	"strconv"
 	"strings"
-
-	"github.com/jrhorner1/AoC/pkg/math"
 )
 
-// var filename = "2021/input/7"
+var filename = "2021/input/7"
 
-var filename = "2021/examples/7"
+// var filename = "2021/examples/7"
 
-func Part1() int {
+func Part1() float64 {
 	return puzzle(input(filename), false)
 }
 
-func Part2() int {
+func Part2() float64 {
 	return puzzle(input(filename), true)
 }
 
-func input(file string) []int {
+func input(file string) []float64 {
 	input, _ := ioutil.ReadFile(file)
 	in := strings.Split(strings.TrimSpace(string(input)), ",")
-	output := []int{}
+	output := []float64{}
 	for _, i := range in {
 		out, _ := strconv.Atoi(i)
-		output = append(output, out)
+		output = append(output, float64(out))
 	}
 	return output
 }
 
-func puzzle(input []int, part2 bool) int {
-	most, total := 0, 0
-	for _, i := range input { // determine the furthest (largest) point
-		total += i
-		if i > most {
-			most = i
-		}
-	}
+func puzzle(input []float64, part2 bool) float64 {
 	if part2 {
-		median, totalFuel := 0, 0
-		// mediam for example input is 4.9 but rounding based on remainder doesnt work for the puzzle input
-		if filename == "2021/examples/7" {
-			median = (total / len(input)) + 1
-		} else {
-			median = total / len(input)
+		meanFloor, meanCeil := math.Floor(Mean(&input)), math.Ceil(Mean(&input))
+		fuelFloor, fuelCeil := 0.0, 0.0
+		for _, crab := range input {
+			fuelFloor += getSteps(crab, meanFloor)
+			fuelCeil += getSteps(crab, meanCeil)
 		}
-		for _, i := range input {
-			steps := math.IntAbs(i - median)
-			for i := 1; i <= steps; i++ {
-				totalFuel += i
-			}
-		}
-		return totalFuel
+		return math.Min(fuelFloor, fuelCeil)
 	}
-	steps := make(map[int]int)   // each potential alignment position and total steps to get there
-	for i := 0; i <= most; i++ { // calculate total steps to each position
-		for _, p := range input {
-			if p > i {
-				steps[i] += p - i
-			} else {
-				steps[i] += i - p
-			}
-		}
+	sort.Float64s(input)
+	var median, fuel float64
+	if len(input)%2 != 0 { // odd
+		median = input[len(input)/2-1]
+	} else { // even
+		index := (len(input)/2 - 1 + len(input)/2) / 2
+		median = input[index]
 	}
-	leastSteps := steps[0]
-	for i := 1; i < len(steps); i++ { // find the least steps
-		if steps[i] < leastSteps {
-			leastSteps = steps[i]
-		}
+	for _, i := range input {
+		fuel += math.Abs(i - median)
 	}
-	return leastSteps
+	return fuel
+}
+
+func Mean(slice *[]float64) float64 {
+	sum := 0.0
+	for _, i := range *slice {
+		sum += i
+	}
+	return sum / float64(len(*slice))
+}
+
+func getSteps(crab float64, mean float64) float64 {
+	steps := math.Abs(float64(crab) - mean)
+	// https://en.wikipedia.org/wiki/Triangular_number
+	return math.Floor((math.Pow(steps, 2) + steps) / 2)
 }

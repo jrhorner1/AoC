@@ -58,8 +58,8 @@ func Run(day *int) {
 		fmt.Println("Part 2:", day6.Part2())
 	case 7:
 		fmt.Println("\tDay 7 solutions")
-		fmt.Println("Part 1:", day7.Part1())
-		fmt.Println("Part 2:", day7.Part2())
+		fmt.Println("Part 1:", int(day7.Part1()))
+		fmt.Println("Part 2:", int(day7.Part2()))
 	case 8:
 		panic("unimplemented")
 		// fmt.Println("\tDay 8 solutions")
