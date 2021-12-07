@@ -1,32 +1,16 @@
 package day13
 
 import (
-	"io/ioutil"
 	"math"
 	"strconv"
 	"strings"
 )
 
-var filename = "2020/input/13"
-
-func Part1() int {
-	return puzzle(input(filename), false)
-}
-
-func Part2() int {
-	return puzzle(input(filename), true)
-}
-
-func input(file string) []string {
-	input, _ := ioutil.ReadFile(file)
-	output := strings.Split(strings.TrimSpace(string(input)), "\n")
-	return output
-}
-
-func puzzle(input []string, part2 bool) int {
-	timestamp, _ := strconv.Atoi(input[0])
+func Puzzle(input *[]byte, part2 bool) int {
+	in := strings.Split(strings.TrimSpace(string(*input)), "\n")
+	timestamp, _ := strconv.Atoi(in[0])
 	bus, wait, ts, increment := math.MaxInt64, 0, 0, 1
-	for i, s := range strings.Split(input[1], ",") {
+	for i, s := range strings.Split(in[1], ",") {
 		id, err := strconv.Atoi(s)
 		if err != nil {
 			continue

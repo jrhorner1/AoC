@@ -2,29 +2,12 @@ package day11
 
 import (
 	"image"
-	"io/ioutil"
 	"strings"
 )
 
-var filename = "2020/input/11"
-
-func Part1() int {
-	return puzzle(input(filename), false)
-}
-
-func Part2() int {
-	return puzzle(input(filename), true)
-}
-
-func input(file string) []string {
-	input, _ := ioutil.ReadFile(file)
-	output := strings.Split(strings.TrimSpace(string(input)), "\n")
-	return output
-}
-
-func puzzle(input []string, part2 bool) int {
+func Puzzle(input *[]byte, part2 bool) int {
 	seats := map[image.Point]rune{}
-	for y, row := range input {
+	for y, row := range strings.Split(strings.TrimSpace(string(*input)), "\n") {
 		for x, rune := range row {
 			seats[image.Point{x, y}] = rune
 		}

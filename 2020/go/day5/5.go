@@ -1,32 +1,38 @@
 package day5
 
 import (
-	"io/ioutil"
 	"sort"
 	"strconv"
 	"strings"
 )
 
-var filename = "2020/input/5"
-
-func Part1() int {
-	return puzzle(input(filename), false)
-}
-
-func Part2() int {
-	return puzzle(input(filename), true)
-}
-
-func input(file string) []string {
-	input, _ := ioutil.ReadFile(file)
-	output := strings.Split(strings.TrimSpace(string(input)), "\n")
-	return output
-}
-
 type BoardingPass struct {
 	Row int
 	Col int
 	Id  int
+}
+
+func Puzzle(input *[]byte, part2 bool) int {
+	var bps []BoardingPass
+	for _, i := range strings.Split(strings.TrimSpace(string(*input)), "\n") {
+		bin := parsebin(i)
+		pass := findseat(bin)
+		bps = append(bps, pass)
+	}
+	sort.Sort(ByRowCol(bps))
+	if part2 {
+		var my_bp BoardingPass
+		for i, bp := range bps {
+			if bps[i+1].Id != bp.Id+1 && bps[i+1].Id == bp.Id+2 {
+				my_bp.Id = bp.Id + 1
+				my_bp.Row = bp.Row
+				my_bp.Col = bp.Col + 1
+				break
+			}
+		}
+		return my_bp.Id
+	}
+	return bps[len(bps)-1].Id
 }
 
 func parsebin(i string) string {
@@ -67,27 +73,4 @@ func (a ByRowCol) Less(i, j int) bool {
 		return false
 	}
 	return a[i].Col < a[j].Col
-}
-
-func puzzle(input []string, part2 bool) int {
-	var bps []BoardingPass
-	for _, i := range input {
-		bin := parsebin(i)
-		pass := findseat(bin)
-		bps = append(bps, pass)
-	}
-	sort.Sort(ByRowCol(bps))
-	if part2 {
-		var my_bp BoardingPass
-		for i, bp := range bps {
-			if bps[i+1].Id != bp.Id+1 && bps[i+1].Id == bp.Id+2 {
-				my_bp.Id = bp.Id + 1
-				my_bp.Row = bp.Row
-				my_bp.Col = bp.Col + 1
-				break
-			}
-		}
-		return my_bp.Id
-	}
-	return bps[len(bps)-1].Id
 }

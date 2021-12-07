@@ -1,25 +1,8 @@
 package day6
 
 import (
-	"io/ioutil"
 	"strings"
 )
-
-var filename = "2019/input/6"
-
-func Part1() int {
-	return puzzle(input(filename), false)
-}
-
-func Part2() int {
-	return puzzle(input(filename), true)
-}
-
-func input(file string) []string {
-	input, _ := ioutil.ReadFile(file)
-	output := strings.Split(strings.TrimSpace(string(input)), "\n")
-	return output
-}
 
 type planet struct {
 	name     string
@@ -29,9 +12,9 @@ type planet struct {
 	indirect int
 }
 
-func puzzle(input []string, part2 bool) int {
+func Puzzle(input *[]byte, part2 bool) int {
 	var orbitMap []planet
-	for _, in := range input {
+	for _, in := range strings.Split(strings.TrimSpace(string(*input)), "\n") {
 		orbit := strings.Split(in, ")")
 		inMap := false
 		for i := range orbitMap {

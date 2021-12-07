@@ -1,26 +1,9 @@
 package day3
 
 import (
-	"io/ioutil"
 	"strconv"
 	"strings"
 )
-
-var filename = "2016/input/3"
-
-func Part1() int {
-	return Puzzle(Input(filename), false)
-}
-
-func Part2() int {
-	return Puzzle(Input(filename), true)
-}
-
-func Input(file string) []string {
-	input, _ := ioutil.ReadFile(file)
-	output := strings.Split(strings.TrimSpace(string(input)), "\n")
-	return output
-}
 
 type triangle struct {
 	a int
@@ -28,9 +11,9 @@ type triangle struct {
 	c int
 }
 
-func Puzzle(input []string, part2 bool) int {
+func Puzzle(input *[]byte, part2 bool) int {
 	triangles := []triangle{}
-	for _, s := range input {
+	for _, s := range strings.Split(strings.TrimSpace(string(*input)), "\n") {
 		raw := strings.Fields(s)
 		a, _ := strconv.Atoi(raw[0])
 		b, _ := strconv.Atoi(raw[1])

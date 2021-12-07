@@ -1,35 +1,9 @@
 package day12
 
 import (
-	"io/ioutil"
 	"strconv"
 	"strings"
 )
-
-var filename = "2019/input/12"
-
-func Part1() int {
-	return puzzle(input(filename), false)
-}
-
-func Part2() int {
-	return puzzle(input(filename), true)
-}
-
-func input(file string) []v3d {
-	input, _ := ioutil.ReadFile(file)
-	in := strings.Split(strings.TrimSpace(string(input)), "\n")
-	output := []v3d{}
-	for _, i := range in {
-		positionString := strings.Split(i[1:len(i)-1], ", ")
-		position := v3d{}
-		position.x, _ = strconv.Atoi(positionString[0][2:])
-		position.y, _ = strconv.Atoi(positionString[1][2:])
-		position.z, _ = strconv.Atoi(positionString[2][2:])
-		output = append(output, position)
-	}
-	return output
-}
 
 type v3d struct {
 	x, y, z int
@@ -39,7 +13,16 @@ type Moon struct {
 	pos, vel v3d
 }
 
-func puzzle(positions []v3d, part2 bool) int {
+func Puzzle(input *[]byte, part2 bool) int {
+	positions := []v3d{}
+	for _, i := range strings.Split(strings.TrimSpace(string(*input)), "\n") {
+		positionString := strings.Split(i[1:len(i)-1], ", ")
+		position := v3d{}
+		position.x, _ = strconv.Atoi(positionString[0][2:])
+		position.y, _ = strconv.Atoi(positionString[1][2:])
+		position.z, _ = strconv.Atoi(positionString[2][2:])
+		positions = append(positions, position)
+	}
 	var moons []Moon
 	initialVelocity := v3d{x: 0, y: 0, z: 0}
 	for i := range positions {

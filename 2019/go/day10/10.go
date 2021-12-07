@@ -1,27 +1,10 @@
 package day10
 
 import (
-	"io/ioutil"
 	"math"
 	"sort"
 	"strings"
 )
-
-var filename = "2019/input/10"
-
-func Part1() int {
-	return puzzle(input(filename), false)
-}
-
-func Part2() int {
-	return puzzle(input(filename), true)
-}
-
-func input(file string) []string {
-	input, _ := ioutil.ReadFile(file)
-	output := strings.Split(strings.TrimSpace(string(input)), "\n")
-	return output
-}
 
 type Asteroid struct {
 	x, y, m, au float64
@@ -29,8 +12,8 @@ type Asteroid struct {
 	zapped      bool
 }
 
-func puzzle(input []string, part2 bool) int {
-	grid := GetGrid(input)
+func Puzzle(input *[]byte, part2 bool) int {
+	grid := GetGrid(strings.Split(strings.TrimSpace(string(*input)), "\n"))
 	station := Asteroid{x: 0, y: 0, los: 0}
 	for _, asteroid := range *grid {
 		if asteroid.los > station.los {

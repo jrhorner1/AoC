@@ -1,25 +1,24 @@
 package day8
 
 import (
-	"io/ioutil"
 	"strconv"
 	"strings"
 )
 
-var filename = "2020/input/8"
-
-func Part1() int {
-	return puzzle(input(filename), false)
-}
-
-func Part2() int {
-	return puzzle(input(filename), true)
-}
-
-func input(file string) []string {
-	input, _ := ioutil.ReadFile(file)
-	output := strings.Split(strings.TrimSpace(string(input)), "\n")
-	return output
+func Puzzle(input *[]byte, part2 bool) int {
+	in := strings.Split(strings.TrimSpace(string(*input)), "\n")
+	if part2 {
+		for i, s := range in {
+			n_instr := make([]string, len(in))
+			copy(n_instr, in)
+			n_instr[i] = strings.NewReplacer("jmp", "nop", "nop", "jmp").Replace(s)
+			if acc, inf := run(n_instr); inf == false {
+				return acc
+			}
+		}
+	}
+	acc, _ := run(in)
+	return acc
 }
 
 func run(instr []string) (int, bool) {
@@ -42,19 +41,4 @@ func run(instr []string) (int, bool) {
 		steps++
 	}
 	return acc, false
-}
-
-func puzzle(input []string, part2 bool) int {
-	if part2 {
-		for i, s := range input {
-			n_instr := make([]string, len(input))
-			copy(n_instr, input)
-			n_instr[i] = strings.NewReplacer("jmp", "nop", "nop", "jmp").Replace(s)
-			if acc, inf := run(n_instr); inf == false {
-				return acc
-			}
-		}
-	}
-	acc, _ := run(input)
-	return acc
 }

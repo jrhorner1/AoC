@@ -2,7 +2,6 @@ package main
 
 import (
 	"flag"
-	"fmt"
 	"time"
 
 	y15 "github.com/jrhorner1/AoC/2015/go"
@@ -22,21 +21,21 @@ func main() {
 
 	switch year {
 	case 2015:
-		y15.Run(&day)
+		y15.Run(&year, &day)
 	case 2016:
-		y16.Run(&day)
+		y16.Run(&year, &day)
 	case 2017:
-		y17.Run(&day)
+		y17.Run(&year, &day)
 	case 2018:
-		y18.Run(&day)
+		y18.Run(&year, &day)
 	case 2019:
-		y19.Run(&day)
+		y19.Run(&year, &day)
 	case 2020:
-		y20.Run(&day)
+		y20.Run(&year, &day)
 	case 2021:
-		y21.Run(&day)
+		y21.Run(&year, &day)
 	default:
-		fmt.Println("The year either hasn't been implmented yet or advent of code didnt exist that year.")
+		panic("Either advent of code didn't exist, or the year you're looking for isn't here yet.")
 	}
 
 }

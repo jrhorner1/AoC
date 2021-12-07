@@ -1,32 +1,15 @@
 package day2
 
 import (
-	"io/ioutil"
 	"strings"
 
 	geom "github.com/jrhorner1/AoC/pkg/math/geometry"
 )
 
-var filename = "2016/input/2"
-
-func Part1() string {
-	return Puzzle(Input(filename), false)
-}
-
-func Part2() string {
-	return Puzzle(Input(filename), true)
-}
-
-func Input(file string) []string {
-	input, _ := ioutil.ReadFile(file)
-	output := strings.Split(strings.TrimSpace(string(input)), "\n")
-	return output
-}
-
-func Puzzle(input []string, part2 bool) string {
+func Puzzle(input *[]byte, part2 bool) string {
 	var code string
 	var realCode string
-	for _, instruction := range input {
+	for _, instruction := range strings.Split(strings.TrimSpace(string(*input)), "\n") {
 		code = code + getButton(&instruction, 1)
 		realCode = realCode + getButton(&instruction, 2)
 	}

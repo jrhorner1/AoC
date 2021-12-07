@@ -2,7 +2,6 @@ package day11
 
 import (
 	"fmt"
-	"io/ioutil"
 	"sort"
 	"strconv"
 	"strings"
@@ -10,35 +9,19 @@ import (
 	"github.com/jrhorner1/AoC/pkg/intcode"
 )
 
-var filename = "2019/input/11"
-
-func Part1() int {
-	return puzzle(input(filename), 0)
-}
-
-func Part2() {
-	puzzle(input(filename), 1)
-}
-
-func input(file string) []int {
-	input, _ := ioutil.ReadFile(file)
-	in := strings.Split(strings.TrimSpace(string(input)), ",")
-	var output []int
-	for _, i := range in {
-		out, _ := strconv.Atoi(i)
-		output = append(output, out)
-	}
-	return output
-}
-
 type Panel struct {
 	x, y  int
 	dir   int
 	color int
 }
 
-func puzzle(input []int, color int) int {
-	panels := paint(&input, color)
+func Puzzle(input *[]byte, color int) int {
+	var in []int
+	for _, i := range strings.Split(strings.TrimSpace(string(*input)), ",") {
+		out, _ := strconv.Atoi(i)
+		in = append(in, out)
+	}
+	panels := paint(&in, color)
 	if color == 1 {
 		sort.Slice(*panels, func(i, j int) bool {
 			if (*panels)[i].y > (*panels)[j].y {
