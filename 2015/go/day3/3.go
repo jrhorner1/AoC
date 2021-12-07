@@ -1,34 +1,18 @@
 package day3
 
 import (
-	"io/ioutil"
 	"strings"
 
 	geom "github.com/jrhorner1/AoC/pkg/math/geometry"
 )
 
-var filename = "2015/input/3"
-
-func Part1() int {
-	return Puzzle(Input(filename), false)
-}
-
-func Part2() int {
-	return Puzzle(Input(filename), true)
-}
-
-func Input(file string) string {
-	input, _ := ioutil.ReadFile(file)
-	output := strings.TrimSpace(string(input))
-	return output
-}
-
-func Puzzle(input string, part2 bool) int {
+func Puzzle(input *[]byte, part2 bool) int {
+	inputString := strings.TrimSpace(string(*input))
 	santa, robosanta := geom.Point{0, 0}, geom.Point{0, 0}
 	visited := make(map[geom.Point]int)
 	visited[santa], visited[robosanta] = 1, 1
 	// for each direction move, then add it to the map. if already visited, the count increases
-	for i, direction := range input {
+	for i, direction := range inputString {
 		if part2 {
 			if i%2 == 0 { // santa moves on odd (even index) directions
 				movePoint(&santa, direction)

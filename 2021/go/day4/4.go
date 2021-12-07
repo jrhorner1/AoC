@@ -1,27 +1,10 @@
 package day4
 
 import (
-	"io/ioutil"
 	"math"
 	"strconv"
 	"strings"
 )
-
-var filename = "2021/input/4"
-
-func Part1() int {
-	return Puzzle(Input(filename), false)
-}
-
-func Part2() int {
-	return Puzzle(Input(filename), true)
-}
-
-func Input(file string) []string {
-	input, _ := ioutil.ReadFile(file)
-	output := strings.Split(strings.TrimSpace(string(input)), "\n\n")
-	return output
-}
 
 type bingoSquare struct {
 	number int
@@ -35,15 +18,16 @@ type bingoBoard struct {
 	score   int
 }
 
-func Puzzle(input []string, part2 bool) int {
-	splitStrings := strings.Split(input[0], ",")
+func Puzzle(input *[]byte, part2 bool) int {
+	in := strings.Split(strings.TrimSpace(string(*input)), "\n\n")
+	splitStrings := strings.Split(in[0], ",")
 	numbers := []int{}
 	for _, s := range splitStrings {
 		number, _ := strconv.Atoi(s)
 		numbers = append(numbers, number)
 	}
 	boards := []bingoBoard{}
-	for id, boardString := range input[1:] {
+	for id, boardString := range in[1:] {
 		board := bingoBoard{[]bingoSquare{}, id, 0, 0}
 		for _, rowString := range strings.Split(strings.TrimSpace(string(boardString)), "\n") {
 			numberStrings := strings.Fields(rowString)

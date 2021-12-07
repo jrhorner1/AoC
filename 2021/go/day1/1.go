@@ -1,34 +1,18 @@
 package day1
 
 import (
-	"io/ioutil"
 	"strconv"
 	"strings"
 )
 
-var filename = "2021/input/1"
-
-func Part1() int {
-	return DepthScan(Input(filename), false)
-}
-
-func Part2() int {
-	return DepthScan(Input(filename), true)
-}
-
-func Input(file string) []int {
-	input, _ := ioutil.ReadFile(file)
-	in := strings.Split(strings.TrimSpace(string(input)), "\n")
+func Puzzle(input *[]byte, sliding bool) int {
+	in := strings.Split(strings.TrimSpace(string(*input)), "\n")
 	// convert strings to ints
 	var depths []int
 	for i := 0; i < len(in); i++ {
 		tmp, _ := strconv.Atoi(in[i])
 		depths = append(depths, tmp)
 	}
-	return depths
-}
-
-func DepthScan(depths []int, sliding bool) int {
 	increase := 0
 	if sliding {
 		// add 3 depths (sliding window) and compare to previous sum, counting increases

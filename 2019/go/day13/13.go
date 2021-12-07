@@ -2,40 +2,23 @@ package day13
 
 import (
 	"fmt"
-	"io/ioutil"
 	"strconv"
 	"strings"
 
 	"github.com/jrhorner1/AoC/pkg/intcode"
 )
 
-var filename = "2019/input/13"
-
-func Part1() int {
-	return puzzle(input(filename), false)
-}
-
-func Part2() int {
-	return puzzle(input(filename), true)
-}
-
-func input(file string) []int {
-	input, _ := ioutil.ReadFile(file)
-	in := strings.Split(strings.TrimSpace(string(input)), ",")
-	var output []int
-	for _, i := range in {
-		out, _ := strconv.Atoi(i)
-		output = append(output, out)
-	}
-	return output
-}
-
 type Tile struct {
 	x, y int
 	id   int
 }
 
-func puzzle(program []int, part2 bool) int {
+func Puzzle(input *[]byte, part2 bool) int {
+	var program []int
+	for _, i := range strings.Split(strings.TrimSpace(string(*input)), ",") {
+		out, _ := strconv.Atoi(i)
+		program = append(program, out)
+	}
 	// if part2 {
 	// 	return arcade(&program, 2)
 	// }

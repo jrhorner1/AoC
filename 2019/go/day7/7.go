@@ -1,35 +1,16 @@
 package day7
 
 import (
-	"io/ioutil"
 	"strconv"
 	"strings"
 
 	"github.com/jrhorner1/AoC/pkg/intcode"
 )
 
-var filename = "2019/input/7"
-
-func Part1() int {
-	phaseVals := []int{0, 1, 2, 3, 4}
-	return puzzle(input(filename), phaseVals)
-}
-
-func Part2() int {
-	phaseVals := []int{5, 6, 7, 8, 9}
-	return puzzle(input(filename), phaseVals)
-}
-
-func input(file string) []string {
-	input, _ := ioutil.ReadFile(file)
-	output := strings.Split(strings.TrimSpace(string(input)), ",")
-	return output
-}
-
-func puzzle(input []string, phaseVals []int) int {
+func Puzzle(input *[]byte, phaseVals []int) int {
 	var program []int
-	for i := 0; i < len(input); i++ {
-		tmp, _ := strconv.Atoi(input[i])
+	for _, i := range strings.Split(strings.TrimSpace(string(*input)), ",") {
+		tmp, _ := strconv.Atoi(i)
 		program = append(program, tmp)
 	}
 	// generate list of phase sequence

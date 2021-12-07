@@ -1,38 +1,21 @@
 package day2
 
 import (
-	"io/ioutil"
 	"strconv"
 	"strings"
 
 	geo "github.com/jrhorner1/AoC/pkg/math/geometry"
 )
 
-var filename = "2021/input/2"
-
 type submarine struct {
 	location geo.Point
 	aim      int
 }
 
-func Part1() int {
-	return Puzzle(Input(filename), false)
-}
-
-func Part2() int {
-	return Puzzle(Input(filename), true)
-}
-
-func Input(file string) []string {
-	input, _ := ioutil.ReadFile(file)
-	output := strings.Split(strings.TrimSpace(string(input)), "\n")
-	return output
-}
-
-func Puzzle(input []string, part2 bool) int {
+func Puzzle(input *[]byte, part2 bool) int {
 	p1 := submarine{geo.Point{0, 0}, 0}
 	p2 := submarine{geo.Point{0, 0}, 0}
-	for _, i := range input {
+	for _, i := range strings.Split(strings.TrimSpace(string(*input)), "\n") {
 		instruction := strings.Fields(i)
 		direction := instruction[0]
 		distance, _ := strconv.Atoi(instruction[1])
