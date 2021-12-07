@@ -1,10 +1,10 @@
 package intcode
 
 type Computer struct {
-	memory       *[]int   // this is the programs memory space
+	Memory       *[]int   // this is the programs memory space
 	pointer      int      // pointer to current memory address
-	input        chan int // input channel
-	output       chan int // output channel
+	Input        chan int // input channel
+	Output       chan int // output channel
 	instruction  int      // the raw opcode instruction
 	relativeBase int      // relative base for parameter 2 operations
 }
@@ -20,10 +20,10 @@ func NewComputer(program *[]int) Computer {
 	copy(memory, *program)
 
 	return Computer{
-		memory:       &memory,
+		Memory:       &memory,
 		pointer:      0,
-		input:        make(chan int, 1),
-		output:       make(chan int),
+		Input:        make(chan int, 1),
+		Output:       make(chan int),
 		instruction:  0,
 		relativeBase: 0}
 }
@@ -56,7 +56,7 @@ loop: // loop until the program ends
 			break loop // self explanatory, break the loop created above
 		}
 	}
-	close(c.output) // close the output channel once the program ends
+	close(c.Output) // close the output channel once the program ends
 	return
 }
 
@@ -65,11 +65,11 @@ func (c *Computer) Parameter(mode int) int {
 	var address int
 	switch mode {
 	case 0: // position mode
-		address = (*c.memory)[c.pointer]
+		address = (*c.Memory)[c.pointer]
 	case 1: // immediate mode
 		address = c.pointer
 	case 2: // relative mode
-		address = (*c.memory)[c.pointer] + c.relativeBase
+		address = (*c.Memory)[c.pointer] + c.relativeBase
 	}
 	c.pointer++ // move the pointer to the next address
 	return address
@@ -78,13 +78,13 @@ func (c *Computer) Parameter(mode int) int {
 // returns the value at the correct memory address
 func (c *Computer) Read(mode int) int {
 	address := c.Parameter(mode)
-	return (*c.memory)[address]
+	return (*c.Memory)[address]
 }
 
 // writes the value to the correct memory address
 func (c *Computer) Write(value int, mode int) {
 	address := c.Parameter(mode)
-	(*c.memory)[address] = value
+	(*c.Memory)[address] = value
 	return
 }
 
@@ -104,26 +104,27 @@ func (c *Computer) Multiply() {
 }
 
 func (c *Computer) PutInput() {
-	in := <-c.input
+	in := <-c.Input
 	c.Write(in, (c.instruction/100)%10)
-}
-
-func (c *Computer) GetInput() chan int {
-	return c.input
 }
 
 func (c *Computer) PutOutput() {
 	out := c.Read((c.instruction / 100) % 10)
-	c.output <- out
+	c.Output <- out
+}
+
+// BeginDeprecated
+func (c *Computer) GetInput() chan int {
+	return c.Input
 }
 
 func (c *Computer) GetOutput() chan int {
-	return c.output
+	return c.Output
 }
 
 func (c *Computer) GetMemory() *[]int {
-	return c.memory
-}
+	return c.Memory
+} // EndDeprecated
 
 func (c *Computer) JumpIfTrue() {
 	test := c.Read((c.instruction / 100) % 10)
