@@ -5,6 +5,7 @@ import (
 	"io/ioutil"
 
 	"github.com/jrhorner1/AoC/2021/go/day1"
+	"github.com/jrhorner1/AoC/2021/go/day10"
 	"github.com/jrhorner1/AoC/2021/go/day2"
 	"github.com/jrhorner1/AoC/2021/go/day3"
 	"github.com/jrhorner1/AoC/2021/go/day4"
@@ -44,6 +45,9 @@ func Run(year, day *int) {
 	case 9:
 		input, _ := ioutil.ReadFile("2021/input/9")
 		fmt.Printf("\t%d Day %d solutions\nPart 1: %d\nPart 2: %d\n", *year, *day, day9.Puzzle(&input, false), day9.Puzzle(&input, true))
+	case 10:
+		input, _ := ioutil.ReadFile("2021/input/10")
+		fmt.Printf("\t%d Day %d solutions\nPart 1: %d\nPart 2: %d\n", *year, *day, day10.Puzzle(&input, false), day10.Puzzle(&input, true))
 	default:
 		panic("unimplemented")
 	case 26, 27, 28, 29, 30, 31:
