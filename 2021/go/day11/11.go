@@ -8,46 +8,41 @@ import (
 )
 
 type dumboOctopus struct {
-	position geometry.Point
-	energy   int
-	flashed  bool
+	energy  int
+	flashed bool
 }
 
-func (octopus *dumboOctopus) charge() { octopus.energy++ }
-func (octopus *dumboOctopus) flash()  { octopus.flashed, octopus.energy = true, 0 }
-func (octopus *dumboOctopus) reset()  { octopus.flashed = false }
+func (octopus *dumboOctopus) charge() dumboOctopus { octopus.energy++; return *octopus }
+func (octopus *dumboOctopus) flash() dumboOctopus {
+	octopus.flashed, octopus.energy = true, 0
+	return *octopus
+}
+func (octopus *dumboOctopus) reset() dumboOctopus { octopus.flashed = false; return *octopus }
 
-func Puzzle(input *[]byte, part2 bool) int {
-	octopi := []dumboOctopus{}
+func Puzzle(input *[]byte, steps int) int {
+	octopi := map[geometry.Point]dumboOctopus{}
 	for x, row := range strings.Split(strings.TrimSpace(string(*input)), "\n") {
 		for y, e := range strings.TrimSpace(row) {
 			position := geometry.Point{x, y}
 			energy, _ := strconv.Atoi(string(e))
-			octopi = append(octopi, dumboOctopus{position, energy, false})
+			octopi[position] = dumboOctopus{energy, false}
 		}
-	}
-	// steps := len(octopi) // 100 steps since there 10*10 octopi
-	steps := len(octopi)
-	if part2 {
-		steps *= 10
 	}
 	flashes := 0
 	for step := 1; step <= steps; step++ {
-		for i := range octopi {
-			octopi[i].charge()
+		for position, octopus := range octopi {
+			octopi[position] = octopus.charge()
 		}
 		for i := 0; i < len(octopi)/4; i++ {
-			for j := range octopi {
-				if octopi[j].energy > 9 && !octopi[j].flashed {
-					octopi[j].flash()
+			for position, octopus := range octopi {
+				if octopus.energy > 9 && !octopus.flashed {
+					octopi[position] = octopus.flash()
 					neighbors := []geometry.Point{{0, 1}, {0, -1}, {1, 0}, {-1, 0}, {1, 1}, {-1, -1}, {-1, 1}, {1, -1}}
 					for _, n := range neighbors {
-						neighbor := geometry.Point{octopi[j].position.X + n.X, octopi[j].position.Y + n.Y}
-						for k := range octopi {
-							if octopi[k].position.X == neighbor.X && octopi[k].position.Y == neighbor.Y {
-								if !octopi[k].flashed {
-									octopi[k].charge()
-								}
+						neighborPosition := geometry.Point{position.X + n.X, position.Y + n.Y}
+						if neighbor, found := octopi[neighborPosition]; found {
+							if !neighbor.flashed {
+								octopi[neighborPosition] = neighbor.charge()
 							}
 						}
 					}
@@ -56,9 +51,9 @@ func Puzzle(input *[]byte, part2 bool) int {
 			}
 		}
 		synced := true
-		for i := range octopi {
-			if octopi[i].flashed {
-				octopi[i].reset()
+		for position, octopus := range octopi {
+			if octopus.flashed {
+				octopi[position] = octopus.reset()
 			} else {
 				synced = false
 			}
