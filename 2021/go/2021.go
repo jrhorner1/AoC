@@ -51,8 +51,7 @@ func Run(year, day *int) {
 		fmt.Printf("\t%d Day %d solutions\nPart 1: %d\nPart 2: %d\n", *year, *day, day10.Puzzle(&input, false), day10.Puzzle(&input, true))
 	case 11:
 		input, _ := ioutil.ReadFile("2021/input/11")
-		// input, _ := ioutil.ReadFile("2021/examples/11")
-		fmt.Printf("\t%d Day %d solutions\nPart 1: %d\nPart 2: %d\n", *year, *day, day11.Puzzle(&input, false), day11.Puzzle(&input, true))
+		fmt.Printf("\t%d Day %d solutions\nPart 1: %d\nPart 2: %d\n", *year, *day, day11.Puzzle(&input, 100), day11.Puzzle(&input, 10000))
 	default:
 		panic("unimplemented")
 	case 26, 27, 28, 29, 30, 31:
