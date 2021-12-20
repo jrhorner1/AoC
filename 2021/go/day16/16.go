@@ -1,118 +1,75 @@
 package day16
 
 import (
-	"sort"
+	"math"
 	"strconv"
 	"strings"
 )
 
 func Puzzle(input *[]byte, part2 bool) int {
-	hex2Bin := map[rune]string{'0': "0000", '1': "0001", '2': "0010", '3': "0011", '4': "0100", '5': "0101", '6': "0110", '7': "0111", '8': "1000", '9': "1001", 'A': "1010", 'B': "1011", 'C': "1100", 'D': "1101", 'E': "1110", 'F': "1111"}
-	binaryString := ""
-	for _, r := range strings.TrimSpace(string(*input)) {
-		binaryString += hex2Bin[r]
-	}
-	message := decode([]rune(binaryString))
+	message := Decode(HexToBinary(string(*input)))
 	if part2 {
 		return message.content
 	}
 	return message.versionSum
 }
 
-type packet struct {
+func HexToBinary(input string) []rune {
+	hexToBinary := map[rune]string{'0': "0000", '1': "0001", '2': "0010", '3': "0011", '4': "0100", '5': "0101", '6': "0110", '7': "0111", '8': "1000", '9': "1001", 'A': "1010", 'B': "1011", 'C': "1100", 'D': "1101", 'E': "1110", 'F': "1111"}
+	binaryString := ""
+	for _, r := range strings.TrimSpace(input) {
+		binaryString += hexToBinary[r]
+	}
+	return []rune(binaryString)
+}
+
+type Packet struct {
 	bits       []rune
 	index      int
 	version    int
 	versionSum int
 	typeID     int
 	content    int
-	subpackets []packet
+	subpackets []Packet
 }
 
-func (p *packet) read(c int) int {
+func (p *Packet) Read(c int) (int, error) {
+	v, err := strconv.ParseInt(string(p.Pop(c)), 2, 0)
+	return int(v), err
+}
+
+func (p *Packet) Pop(c int) []rune {
 	s := p.bits[p.index : p.index+c]
-	v, _ := strconv.ParseInt(string(s), 2, 0)
 	p.index += c
-	return int(v)
+	return s
 }
 
-func decode(bin []rune) packet {
-	var p packet
+func Decode(bin []rune) Packet {
+	var p Packet
 	p.bits = bin
 	p.index = 0
-	p.version = p.read(3)
-	p.typeID = p.read(3)
+	p.version, _ = p.Read(3)
+	p.typeID, _ = p.Read(3)
 	switch p.typeID {
 	case 4: // literal
-		value := 0
-		for {
-			header := p.read(1)
-			value += p.read(4)
-			if header == 0 {
-				break
-			}
-		}
-		p.content = value
-	default:
-		lengthTypeID := p.read(1)
-		if lengthTypeID == 0 {
-			subPacketsLength := p.read(15)
-			remainingLength := len(p.bits[p.index:]) - subPacketsLength
-			for remainingLength != len(p.bits[p.index:]) {
-				p.subpackets = append(p.subpackets, decode(p.bits[p.index:]))
-				p.index += p.subpackets[len(p.subpackets)-1].index
-			}
-		} else { // lengthTypeID == 1
-			subPacketsCount := p.read(11)
-			for i := 0; i < subPacketsCount; i++ {
-				p.subpackets = append(p.subpackets, decode(p.bits[p.index:]))
-				p.index += p.subpackets[len(p.subpackets)-1].index
-			}
-		}
-		subpacketContents := []int{}
-		for _, sub := range p.subpackets {
-			subpacketContents = append(subpacketContents, sub.content)
-		}
-		if len(subpacketContents) == 1 {
-			p.content = subpacketContents[0]
-		}
+		p.content, _ = p.Literal()
+	default: // Operators
+		p.Subpackets()
 		switch p.typeID {
-		case 0: // sum
-			value := 0
-			for _, c := range subpacketContents {
-				value += c
-			}
-			p.content = value
-		case 1: // product
-			value := 1
-			for _, c := range subpacketContents {
-				value *= c
-			}
-			p.content = value
-		case 2: // minimum
-			sort.Ints(subpacketContents)
-			p.content = subpacketContents[0]
-		case 3: // maximum
-			sort.Ints(subpacketContents)
-			p.content = subpacketContents[len(subpacketContents)-1]
-		case 5: // greater than
-			if subpacketContents[0] > subpacketContents[1] {
-				p.content = 1
-			} else {
-				p.content = 0
-			}
-		case 6: // less than
-			if subpacketContents[0] < subpacketContents[1] {
-				p.content = 1
-			} else {
-				p.content = 0
-			}
-		case 7: // equal to
-			if subpacketContents[0] == subpacketContents[1] {
-				p.content = 1
-			} else {
-				p.content = 0
-			}
+		case 0:
+			p.content = p.Sum()
+		case 1:
+			p.content = p.Product()
+		case 2:
+			p.content = p.Min()
+		case 3:
+			p.content = p.Max()
+		case 5:
+			p.content = p.Greater()
+		case 6:
+			p.content = p.Less()
+		case 7:
+			p.content = p.Equal()
 		}
 	}
 	p.versionSum = p.version
@@ -120,4 +77,92 @@ func decode(bin []rune) packet {
 		p.versionSum += sub.versionSum
 	}
 	return p
+}
+
+func (p *Packet) Subpackets() {
+	lengthTypeID, _ := p.Read(1)
+	if lengthTypeID == 0 {
+		subPacketsLength, _ := p.Read(15)
+		remainingLength := len(p.bits[p.index:]) - subPacketsLength
+		for remainingLength < len(p.bits[p.index:]) {
+			p.subpackets = append(p.subpackets, Decode(p.bits[p.index:]))
+			p.index += p.subpackets[len(p.subpackets)-1].index
+		}
+	} else { // lengthTypeID == 1
+		subPacketsCount, _ := p.Read(11)
+		for i := 0; i < subPacketsCount; i++ {
+			p.subpackets = append(p.subpackets, Decode(p.bits[p.index:]))
+			p.index += p.subpackets[len(p.subpackets)-1].index
+		}
+	}
+}
+
+func (p *Packet) Sum() int {
+	value := 0
+	for _, sub := range p.subpackets {
+		value += sub.content
+	}
+	return value
+}
+
+func (p *Packet) Product() int {
+	value := 1
+	for _, sub := range p.subpackets {
+		value *= sub.content
+	}
+	return value
+}
+
+func (p *Packet) Min() int {
+	min := math.MaxInt64
+	for _, sub := range p.subpackets {
+		if sub.content < min {
+			min = sub.content
+		}
+	}
+	return min
+}
+
+func (p *Packet) Max() int {
+	max := 0
+	for _, sub := range p.subpackets {
+		if sub.content > max {
+			max = sub.content
+		}
+	}
+	return max
+}
+
+func (p *Packet) Literal() (int, error) {
+	bValue := []rune{}
+	for {
+		header, _ := p.Read(1)
+		bValue = append(bValue, p.Pop(4)...)
+		if header == 0 {
+			break
+		}
+	}
+	value, err := strconv.ParseInt(string(bValue), 2, 0)
+	return int(value), err
+}
+
+func (p *Packet) Greater() int {
+	if p.subpackets[0].content > p.subpackets[1].content {
+		return 1
+	}
+	return 0
+}
+
+func (p *Packet) Less() int {
+	if p.subpackets[0].content < p.subpackets[1].content {
+		return 1
+	}
+	return 0
+}
+
+func (p *Packet) Equal() int {
+	if p.subpackets[0].content == p.subpackets[1].content {
+		return 1
+	}
+	return 0
 }
