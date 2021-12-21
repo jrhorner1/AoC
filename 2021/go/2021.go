@@ -13,7 +13,11 @@ import (
 	"github.com/jrhorner1/AoC/2021/go/day15"
 	"github.com/jrhorner1/AoC/2021/go/day16"
 	"github.com/jrhorner1/AoC/2021/go/day17"
+	"github.com/jrhorner1/AoC/2021/go/day18"
+	"github.com/jrhorner1/AoC/2021/go/day19"
 	"github.com/jrhorner1/AoC/2021/go/day2"
+	"github.com/jrhorner1/AoC/2021/go/day20"
+	"github.com/jrhorner1/AoC/2021/go/day21"
 	"github.com/jrhorner1/AoC/2021/go/day3"
 	"github.com/jrhorner1/AoC/2021/go/day4"
 	"github.com/jrhorner1/AoC/2021/go/day5"
@@ -45,7 +49,7 @@ func Run(year, day *int) {
 		fmt.Printf("\t%d Day %d solutions\nPart 1: %d\nPart 2: %d\n", *year, *day, day6.Puzzle(&input, 80), day6.Puzzle(&input, 256))
 	case 7:
 		input, _ := ioutil.ReadFile("2021/input/7")
-		fmt.Printf("\t%d Day %d solutions\nPart 1: %d\nPart 2: %d\n", *year, *day, day7.Puzzle(&input, false), day7.Puzzle(&input, true))
+		fmt.Printf("\t%d Day %d solutions\nPart 1: %f\nPart 2: %f\n", *year, *day, day7.Puzzle(&input, false), day7.Puzzle(&input, true))
 	case 8:
 		input, _ := ioutil.ReadFile("2021/input/8")
 		fmt.Printf("\t%d Day %d solutions\nPart 1: %d\nPart 2: %d\n", *year, *day, day8.Puzzle(&input, false), day8.Puzzle(&input, true))
@@ -77,6 +81,18 @@ func Run(year, day *int) {
 	case 17:
 		input, _ := ioutil.ReadFile("2021/input/17")
 		fmt.Printf("\t%d Day %d solutions\nPart 1: %d\nPart 2: %d\n", *year, *day, day17.Puzzle(&input, false), day17.Puzzle(&input, true))
+	case 18:
+		input, _ := ioutil.ReadFile("2021/input/18")
+		fmt.Printf("\t%d Day %d solutions\nPart 1: %d\nPart 2: %d\n", *year, *day, day18.Puzzle(&input, false), day18.Puzzle(&input, true))
+	case 19:
+		input, _ := ioutil.ReadFile("2021/input/19")
+		fmt.Printf("\t%d Day %d solutions\nPart 1: %d\nPart 2: %d\n", *year, *day, day19.Puzzle(&input, false), day19.Puzzle(&input, true))
+	case 20:
+		input, _ := ioutil.ReadFile("2021/input/20")
+		fmt.Printf("\t%d Day %d solutions\nPart 1: %d\nPart 2: %d\n", *year, *day, day20.Puzzle(&input, false), day20.Puzzle(&input, true))
+	case 21:
+		input, _ := ioutil.ReadFile("2021/input/21")
+		fmt.Printf("\t%d Day %d solutions\nPart 1: %d\nPart 2: %d\n", *year, *day, day21.Puzzle(&input, false), day21.Puzzle(&input, true))
 	default:
 		panic("unimplemented")
 	case 26, 27, 28, 29, 30, 31:
