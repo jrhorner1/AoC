@@ -18,6 +18,10 @@ import (
 	"github.com/jrhorner1/AoC/2021/go/day2"
 	"github.com/jrhorner1/AoC/2021/go/day20"
 	"github.com/jrhorner1/AoC/2021/go/day21"
+	"github.com/jrhorner1/AoC/2021/go/day22"
+	"github.com/jrhorner1/AoC/2021/go/day23"
+	"github.com/jrhorner1/AoC/2021/go/day24"
+	"github.com/jrhorner1/AoC/2021/go/day25"
 	"github.com/jrhorner1/AoC/2021/go/day3"
 	"github.com/jrhorner1/AoC/2021/go/day4"
 	"github.com/jrhorner1/AoC/2021/go/day5"
@@ -89,10 +93,22 @@ func Run(year, day *int) {
 		fmt.Printf("\t%d Day %d solutions\nPart 1: %d\nPart 2: %d\n", *year, *day, day19.Puzzle(&input, false), day19.Puzzle(&input, true))
 	case 20:
 		input, _ := ioutil.ReadFile("2021/input/20")
-		fmt.Printf("\t%d Day %d solutions\nPart 1: %d\nPart 2: %d\n", *year, *day, day20.Puzzle(&input, false), day20.Puzzle(&input, true))
+		fmt.Printf("\t%d Day %d solutions\nPart 1: %d\nPart 2: %d\n", *year, *day, day20.Puzzle(&input, 2), day20.Puzzle(&input, 50))
 	case 21:
 		input, _ := ioutil.ReadFile("2021/input/21")
 		fmt.Printf("\t%d Day %d solutions\nPart 1: %d\nPart 2: %d\n", *year, *day, day21.Puzzle(&input, false), day21.Puzzle(&input, true))
+	case 22:
+		input, _ := ioutil.ReadFile("2021/input/22")
+		fmt.Printf("\t%d Day %d solutions\nPart 1: %d\nPart 2: %d\n", *year, *day, day22.Puzzle(&input, false), day22.Puzzle(&input, true))
+	case 23:
+		input, _ := ioutil.ReadFile("2021/input/23")
+		fmt.Printf("\t%d Day %d solutions\nPart 1: %d\nPart 2: %d\n", *year, *day, day23.Puzzle(&input, false), day23.Puzzle(&input, true))
+	case 24:
+		input, _ := ioutil.ReadFile("2021/input/24")
+		fmt.Printf("\t%d Day %d solutions\nPart 1: %d\nPart 2: %d\n", *year, *day, day24.Puzzle(&input, false), day24.Puzzle(&input, true))
+	case 25:
+		input, _ := ioutil.ReadFile("2021/input/25")
+		fmt.Printf("\t%d Day %d solutions\nPart 1: %d\nPart 2: %d\n", *year, *day, day25.Puzzle(&input, false), day25.Puzzle(&input, true))
 	default:
 		panic("unimplemented")
 	case 26, 27, 28, 29, 30, 31:
