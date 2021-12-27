@@ -1,6 +1,10 @@
 package day20
 
 import (
+	"image"
+	"image/color"
+	"image/gif"
+	"os"
 	"strconv"
 	"strings"
 )
@@ -9,7 +13,7 @@ type pixel struct {
 	X, Y int
 }
 
-type image struct {
+type egami struct {
 	raw           []string
 	height, width int
 	pixels        map[pixel]bool
@@ -21,7 +25,7 @@ func Puzzle(input *[]byte, enhanceCount int) int {
 	in := strings.Split(strings.TrimSpace(string(*input)), "\n\n")
 	rawImage := strings.Split(strings.TrimSpace(in[1]), "\n")
 	enhanceAlgo := in[0]
-	pic := image{
+	pic := egami{
 		raw:       rawImage,
 		height:    len(rawImage),
 		width:     len(rawImage[0]),
@@ -29,13 +33,46 @@ func Puzzle(input *[]byte, enhanceCount int) int {
 		litPixels: 0,
 		infIsLit:  false,
 	}
+	images := []*image.Paletted{}
+	delays := []int{}
 	for i := 0; i < enhanceCount; i++ {
 		pic.enhance(&enhanceAlgo)
+		images = append(images, pic.GetImage(enhanceCount-i))
+		delays = append(delays, 25)
 	}
+	file, err := os.OpenFile("2021/go/day20/20.gif", os.O_WRONLY|os.O_CREATE, 0600)
+	if err != nil {
+		panic(err)
+	}
+	defer file.Close()
+	gif.EncodeAll(file, &gif.GIF{Image: images, Delay: delays})
 	return pic.litPixels
 }
 
-func (i *image) enhance(enhanceAlgo *string) {
+func (i *egami) GetImage(padding int) *image.Paletted {
+	palette := []color.Color{
+		color.Black,
+		color.White,
+		color.Transparent,
+	}
+	w, h := i.width+padding*2, i.height+padding*2
+	img := image.NewPaletted(image.Rectangle{image.Point{0, 0}, image.Point{w, h}}, palette)
+	for y := 0; y < h; y++ {
+		for x := 0; x < h; x++ {
+			img.Set(x, y, color.Transparent)
+			if lit, ok := i.pixels[pixel{x - padding, y - padding}]; ok {
+				if lit {
+					img.Set(x, y, color.Black)
+				} else {
+					img.Set(x, y, color.White)
+				}
+			}
+		}
+	}
+	return img
+}
+
+func (i *egami) enhance(enhanceAlgo *string) {
 	i.expand()
 	i.process()
 	newImage := make(map[pixel]bool)
@@ -77,7 +114,7 @@ func (i *image) enhance(enhanceAlgo *string) {
 	}
 }
 
-func (i *image) expand() {
+func (i *egami) expand() {
 	i.height, i.width = len(i.raw)+2, len((i.raw)[0])+2
 	yPadding, padding := "", "."
 	if i.infIsLit {
@@ -95,7 +132,7 @@ func (i *image) expand() {
 	i.raw = expandedRawImage
 }
 
-func (i *image) process() {
+func (i *egami) process() {
 	pixels := make(map[pixel]bool)
 	for y, line := range i.raw {
 		for x, p := range line {
@@ -109,7 +146,7 @@ func (i *image) process() {
 	i.pixels = pixels
 }
 
-func (i *image) rawImage() {
+func (i *egami) rawImage() {
 	rawImage := []string{}
 	for y := 0; y < i.height; y++ {
 		line := ""
