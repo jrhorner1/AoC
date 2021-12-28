@@ -4,9 +4,14 @@ import (
 	"github.com/jrhorner1/AoC/pkg/math"
 )
 
-type Point struct {
-	X int
-	Y int
+type Point Point2D
+
+type Point2D struct {
+	X, Y int
+}
+
+type Point3D struct {
+	X, Y, Z int
 }
 
 func (p *Point) ManhattanDistance(q Point) int {
