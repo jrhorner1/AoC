@@ -99,7 +99,7 @@ func Run(year, day *int) {
 		fmt.Printf("\t%d Day %d solutions\nPart 1: %d\nPart 2: %d\n", *year, *day, day21.Puzzle(&input, false), day21.Puzzle(&input, true))
 	case 22:
 		input, _ := ioutil.ReadFile("2021/input/22")
-		fmt.Printf("\t%d Day %d solutions\nPart 1: %d\nPart 2: %d\n", *year, *day, day22.Puzzle(&input, false), day22.Puzzle(&input, true))
+		fmt.Printf("\t%d Day %d solutions\nPart 1: %d\nPart 2: %d\n", *year, *day, day22.Puzzle(&input, true), day22.Puzzle(&input, false))
 	case 23:
 		input, _ := ioutil.ReadFile("2021/input/23")
 		fmt.Printf("\t%d Day %d solutions\nPart 1: %d\nPart 2: %d\n", *year, *day, day23.Puzzle(&input, false), day23.Puzzle(&input, true))
