@@ -5,7 +5,6 @@ import (
 	"strings"
 
 	"github.com/jrhorner1/AoC/pkg/math"
-	"github.com/jrhorner1/AoC/pkg/math/geometry"
 )
 
 type cuboid struct {
@@ -25,24 +24,14 @@ func Puzzle(input *[]byte, initializing bool) int {
 		cubes = append(cubes, cube)
 	}
 	if initializing {
-		reactor := make(map[geometry.Point3D]bool)
+		init := cuboids{}
 		initMin, initMax := -50, 50
 		for _, cube := range cubes {
 			if cube.xMin >= initMin && cube.xMax <= initMax && cube.yMin >= initMin && cube.yMax <= initMax && cube.zMin >= initMin && cube.zMax <= initMax {
-				for z := cube.zMin; z <= cube.zMax; z++ {
-					for y := cube.yMin; y <= cube.yMax; y++ {
-						for x := cube.xMin; x <= cube.xMax; x++ {
-							if cube.action == "on" {
-								reactor[geometry.Point3D{X: x, Y: y, Z: z}] = true
-							} else {
-								delete(reactor, geometry.Point3D{X: x, Y: y, Z: z})
-							}
-						}
-					}
-				}
+				init = append(init, cube)
 			}
 		}
-		return len(reactor)
+		return init.count()
 	}
 	return cubes.count()
 }
