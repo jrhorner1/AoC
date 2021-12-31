@@ -52,9 +52,9 @@ func Puzzle(input *[]byte, part2 bool) int {
 				}
 			}
 		}
-		return math.IntAbs(firstDoubleVisit.X) + math.IntAbs(firstDoubleVisit.X)
+		return math.Abs(firstDoubleVisit.X).(int) + math.Abs(firstDoubleVisit.X).(int)
 	}
-	return math.IntAbs(destination.X) + math.IntAbs(destination.Y)
+	return math.Abs(destination.X).(int) + math.Abs(destination.Y).(int)
 
 }
 
