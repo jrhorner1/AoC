@@ -105,7 +105,9 @@ func Run(year, day *int) {
 		fmt.Printf("\t%d Day %d solutions\nPart 1: %d\nPart 2: %d\n", *year, *day, day23.Puzzle(&input, false), day23.Puzzle(&input, true))
 	case 24:
 		input, _ := ioutil.ReadFile("2021/input/24")
-		fmt.Printf("\t%d Day %d solutions\nPart 1: %d\nPart 2: %d\n", *year, *day, day24.Puzzle(&input, false), day24.Puzzle(&input, true))
+		p1, p2 := day24.Puzzle(&input) // ~130s runtime
+		// p1, p2 := day24.Hardcoded() // ~85s runtime
+		fmt.Printf("\t%d Day %d solutions\nPart 1: %d\nPart 2: %d\n", *year, *day, p1, p2)
 	case 25:
 		input, _ := ioutil.ReadFile("2021/input/25")
 		fmt.Printf("\t%d Day %d solutions\nPart 1: %d\nPart 2: %d\n", *year, *day, day25.Puzzle(&input, false), day25.Puzzle(&input, true))
