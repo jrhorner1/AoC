@@ -36,14 +36,70 @@ func FibonacciSeq(n int) []int {
 	return result
 }
 
-func IntAbs(i int) int {
-	return int(math.Abs(float64(i)))
+func Abs(i interface{}) interface{} {
+	switch i.(type) {
+	case int:
+		if i.(int) < 0 {
+			return -i.(int)
+		} else {
+			return i.(int)
+		}
+	case int64:
+		if i.(int64) < 0 {
+			return -i.(int64)
+		} else {
+			return i.(int64)
+		}
+	case float64:
+		if i.(float64) < 0 {
+			return -i.(float64)
+		} else {
+			return i.(float64)
+		}
+	}
+	return nil
 }
 
-func IntMax(a, b int) int {
-	return int(math.Max(float64(a), float64(b)))
+func MaxInt() int {
+	return int(math.MaxInt64)
 }
 
-func IntMin(a, b int) int {
-	return int(math.Min(float64(a), float64(b)))
+func MaxUint() uint {
+	return uint(math.MaxUint64)
+}
+
+func Max(a, b interface{}) interface{} {
+	switch a.(type) {
+	case int:
+		if a.(int) > b.(int) {
+			return a.(int)
+		} else {
+			return b.(int)
+		}
+	case uint:
+		if a.(uint) > b.(uint) {
+			return a.(uint)
+		} else {
+			return b.(uint)
+		}
+	}
+	return nil
+}
+
+func Min(a, b interface{}) interface{} {
+	switch a.(type) {
+	case int:
+		if a.(int) < b.(int) {
+			return a.(int)
+		} else {
+			return b.(int)
+		}
+	case uint:
+		if a.(uint) < b.(uint) {
+			return a.(uint)
+		} else {
+			return b.(uint)
+		}
+	}
+	return nil
 }

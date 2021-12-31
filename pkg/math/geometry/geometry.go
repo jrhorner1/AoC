@@ -15,7 +15,7 @@ type Point3D struct {
 }
 
 func (p *Point) ManhattanDistance(q Point) int {
-	return math.IntAbs(q.X-p.X) + math.IntAbs(q.Y-p.Y)
+	return math.Abs(q.X-p.X).(int) + math.Abs(q.Y-p.Y).(int)
 }
 
 type Line struct {
@@ -71,11 +71,11 @@ func (l *Line) End() Point {
 
 func (l *Line) Length() int {
 	if l.IsDiagonal() {
-		return math.IntAbs(l.A.X - l.B.X)
+		return math.Abs(l.A.X - l.B.X).(int)
 	} else if l.IsHorizontal() {
-		return math.IntAbs(l.A.X - l.B.X)
+		return math.Abs(l.A.X - l.B.X).(int)
 	} else if l.IsVertical() {
-		return math.IntAbs(l.A.Y - l.B.Y)
+		return math.Abs(l.A.Y - l.B.Y).(int)
 	}
 	return 0
 }
@@ -95,7 +95,7 @@ func (l *Line) IsVertical() bool {
 }
 
 func (l *Line) IsDiagonal() bool {
-	if math.IntAbs(l.A.X-l.B.X) == math.IntAbs(l.A.Y-l.B.Y) {
+	if math.Abs(l.A.X-l.B.X).(int) == math.Abs(l.A.Y-l.B.Y).(int) {
 		return true
 	}
 	return false
