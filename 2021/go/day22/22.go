@@ -49,9 +49,9 @@ func (c *cuboids) count() (count int) {
 		intersects, c1 := cuboids{}, &cube
 		for _, c2 := range (*c)[i+1:] {
 			intersect := cuboid{}
-			intersect.xMin, intersect.xMax = math.IntMax(c1.xMin, c2.xMin), math.IntMin(c1.xMax, c2.xMax)
-			intersect.yMin, intersect.yMax = math.IntMax(c1.yMin, c2.yMin), math.IntMin(c1.yMax, c2.yMax)
-			intersect.zMin, intersect.zMax = math.IntMax(c1.zMin, c2.zMin), math.IntMin(c1.zMax, c2.zMax)
+			intersect.xMin, intersect.xMax = math.Max(c1.xMin, c2.xMin).(int), math.Min(c1.xMax, c2.xMax).(int)
+			intersect.yMin, intersect.yMax = math.Max(c1.yMin, c2.yMin).(int), math.Min(c1.yMax, c2.yMax).(int)
+			intersect.zMin, intersect.zMax = math.Max(c1.zMin, c2.zMin).(int), math.Min(c1.zMax, c2.zMax).(int)
 			if intersect.xMax < intersect.xMin || intersect.yMax < intersect.yMin || intersect.zMax < intersect.zMin {
 				continue
 			}
