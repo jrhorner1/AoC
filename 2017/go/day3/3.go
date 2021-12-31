@@ -48,7 +48,7 @@ func Puzzle(input *[]byte, part2 bool) int {
 	}
 	//
 	for _, p := range pivots {
-		dist := math.IntAbs(p - target)
+		dist := math.Abs(p - target).(int)
 		if dist <= (oddsqr-1)/2 {
 			return oddsqr - 1 - dist
 		}
