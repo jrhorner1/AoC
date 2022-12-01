@@ -5,6 +5,7 @@ _usage(){
         printf "%s\n" "$0 -s path/to/session/key -y [0-9]{4} -d [0-9]{2} ]"
         printf "\t%s\n" "-h|--help|-?  Print this help message."
         printf "\t%s\n" "-s|--session  Session key file location. Defaults to ./session"
+        printf "\t%s\n" "-u|--useragent  User agent header to include with http request."
         printf "\t%s\n" "-y|--year  4 digit year to retrieve input for. Defaults to current year"
         printf "\t%s\n" "-d|--day  1 or 2 digit day to retrieve input for. Defaults to current day."
         printf "\t%s\n" "-o|--output  Output filename. Defaults to the configured day."
@@ -26,6 +27,8 @@ while :; do
             sessionFile=$2
             shift
             ;;
+        -u|--useragent)
+            userAgent=$2
         -y|--year)
             year=$2
             shift
@@ -57,7 +60,7 @@ if [[ $? != 0 ]]; then
 fi
 # Validate session hex length
 sessionValue=`cat ${sessionFile}`
-if [[ ${#sessionValue} != 96 ]]; then
+if [[ ${#sessionValue} != 128 ]]; then
     printf "Session hex malformed.\n"
     exit 2
 fi
@@ -68,11 +71,12 @@ day=${day:=`date +%-d`}
 outputPath=${year}/input
 outputFile=${outputFile:=${day}}
 output=${outputPath}/${outputFile}
+userAgent=${userAgent:="github.com/jrhorner1/AoC/getinput.sh by jrhorner@pm.me"}
 
 # Function to get the input file
 _getInput(){
     mkdir -p ${outputPath}
-    curl --cookie session=${sessionValue} -o ${output} https://adventofcode.com/${year}/day/${day}/input 
+    curl --cookie session=${sessionValue} -A "${userAgent}" -o ${output} https://adventofcode.com/${year}/day/${day}/input 
 }
 
 # Validate the output, create if necessary, fetch input

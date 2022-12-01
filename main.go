@@ -1,3 +1,6 @@
+/*?sr/bin/env go run "$0" "$@"; exit $? #*/
+// This is actually not a shebang, the first line is both valid shell script and valid go code.
+
 package main
 
 import (
@@ -11,6 +14,7 @@ import (
 	y19 "github.com/jrhorner1/AoC/2019/go"
 	y20 "github.com/jrhorner1/AoC/2020/go"
 	y21 "github.com/jrhorner1/AoC/2021/go"
+	y22 "github.com/jrhorner1/AoC/2022/go"
 )
 
 func main() {
@@ -34,6 +38,8 @@ func main() {
 		y20.Run(&year, &day)
 	case 2021:
 		y21.Run(&year, &day)
+	case 2022:
+		y22.Run(&year, &day)
 	default:
 		panic("Either advent of code didn't exist, or the year you're looking for isn't here yet.")
 	}
