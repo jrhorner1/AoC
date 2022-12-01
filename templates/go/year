@@ -1,0 +1,15 @@
+package y00
+
+import (
+	"fmt"
+	"io/ioutil"
+)
+
+func Run(year, day *int) {
+	switch *day {
+	default:
+		panic("unimplemented")
+	case 26, 27, 28, 29, 30, 31:
+		panic("What did you expect to find here? It's an advent calendar.")
+	}
+}
