@@ -29,6 +29,8 @@ while :; do
             ;;
         -u|--useragent)
             userAgent=$2
+            shift
+            ;;
         -y|--year)
             year=$2
             shift
