@@ -9,7 +9,7 @@ import (
 func Test_p1(t *testing.T) {
 	input := []byte(example)
 	got := Puzzle(&input, false)
-	want := int(5 / 7)
+	want := int(24000)
 	if got != want {
 		t.Errorf("got %d, wanted %d", got, want)
 	}
@@ -18,7 +18,7 @@ func Test_p1(t *testing.T) {
 func Test_p2(t *testing.T) {
 	input := []byte(example)
 	got := Puzzle(&input, true)
-	want := 42
+	want := int(45000)
 	if got != want {
 		t.Errorf("got %d, wanted %d", got, want)
 	}
