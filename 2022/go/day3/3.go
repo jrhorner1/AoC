@@ -1,6 +1,7 @@
 package day3
 
 import (
+	"regexp"
 	"strings"
 )
 
@@ -10,9 +11,10 @@ type Rucksack struct {
 	compartment2 string
 }
 
+type Rucksacks []Rucksack
+
 func Puzzle(input *[]byte, part2 bool) int {
-	score := 0
-	var rucksacks []Rucksack
+	var rucksacks Rucksacks
 	for _, items := range strings.Split(strings.TrimSpace(string(*input)), "\n") {
 		var rucksack Rucksack
 		rucksack.allItems = items
@@ -21,33 +23,9 @@ func Puzzle(input *[]byte, part2 bool) int {
 		rucksacks = append(rucksacks, rucksack)
 	}
 	if part2 {
-	findBadges:
-		for i := 0; i < len(rucksacks); i += 3 {
-			for _, item1 := range rucksacks[i].allItems {
-				for _, item2 := range rucksacks[i+1].allItems {
-					for _, item3 := range rucksacks[i+2].allItems {
-						if item1 == item2 && item2 == item3 {
-							score += priority(item3)
-							continue findBadges
-						}
-					}
-				}
-			}
-		}
-		return score
+		return rucksacks.findBadges()
 	}
-	for _, rucksack := range rucksacks {
-	compare:
-		for _, item1 := range rucksack.compartment1 {
-			for _, item2 := range rucksack.compartment2 {
-				if item2 == item1 {
-					score += priority(item2)
-					break compare
-				}
-			}
-		}
-	}
-	return score
+	return rucksacks.findItem()
 }
 
 func priority(item rune) int {
@@ -60,4 +38,36 @@ func priority(item rune) int {
 		return ascii - upperCasePriority
 	}
 	return 0
+}
+
+func (rucksacks *Rucksacks) findItem() int {
+	score := 0
+	for _, rucksack := range *rucksacks {
+	compare:
+		for _, item1 := range rucksack.compartment1 {
+			for _, item2 := range rucksack.compartment2 {
+				if item2 == item1 {
+					score += priority(item2)
+					break compare
+				}
+			}
+		}
+	}
+
+	return score
+}
+
+func (rucksacks *Rucksacks) findBadges() int {
+	score := 0
+groups:
+	for i := 0; i < len(*rucksacks); i += 3 {
+		for _, item1 := range (*rucksacks)[i].allItems {
+			re := regexp.MustCompile(string(item1))
+			if re.MatchString((*rucksacks)[i+1].allItems) && re.MatchString((*rucksacks)[i+2].allItems) {
+				score += priority(item1)
+				continue groups
+			}
+		}
+	}
+	return score
 }
