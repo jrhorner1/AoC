@@ -4,13 +4,15 @@ import (
 	"testing"
 )
 
-const example string = `
+const example string = `A Y
+B X
+C Z
 `
 
 func Test_p1(t *testing.T) {
 	input := []byte(example)
 	got := Puzzle(&input, false)
-	want := int(5 / 7)
+	want := int(15)
 	if got != want {
 		t.Errorf("got %d, wanted %d", got, want)
 	}
@@ -19,7 +21,7 @@ func Test_p1(t *testing.T) {
 func Test_p2(t *testing.T) {
 	input := []byte(example)
 	got := Puzzle(&input, true)
-	want := 42
+	want := int(12)
 	if got != want {
 		t.Errorf("got %d, wanted %d", got, want)
 	}
