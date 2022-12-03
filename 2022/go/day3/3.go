@@ -3,14 +3,14 @@ package day3
 import (
 	"strings"
 
+	"github.com/jrhorner1/AoC/pkg/sets"
 	"github.com/sirupsen/logrus"
-	"k8s.io/apimachinery/pkg/util/sets"
 )
 
 type Rucksack struct {
 	allItems,
 	compartment1,
-	compartment2 sets.String
+	compartment2 sets.Rune
 }
 
 type Rucksacks []Rucksack
@@ -19,17 +19,17 @@ func Puzzle(input *[]byte, part2 bool) int {
 	var rucksacks Rucksacks
 	for _, items := range strings.Split(strings.TrimSpace(string(*input)), "\n") {
 		var rucksack Rucksack
-		rucksack.allItems = sets.NewString()
-		rucksack.compartment1 = sets.NewString()
-		rucksack.compartment2 = sets.NewString()
+		rucksack.allItems = sets.NewRune()
+		rucksack.compartment1 = sets.NewRune()
+		rucksack.compartment2 = sets.NewRune()
 		for _, item := range items {
-			rucksack.allItems.Insert(string(item))
+			rucksack.allItems.Insert(item)
 		}
 		for _, item := range items[:(len(items) / 2)] {
-			rucksack.compartment1.Insert(string(item))
+			rucksack.compartment1.Insert(item)
 		}
 		for _, item := range items[(len(items) / 2):] {
-			rucksack.compartment2.Insert(string(item))
+			rucksack.compartment2.Insert(item)
 		}
 		rucksacks = append(rucksacks, rucksack)
 	}
@@ -59,8 +59,7 @@ func (rucksacks *Rucksacks) findItem() int {
 		if itemSet.Len() != 1 {
 			logrus.Fatal("Something's wrong here, I can feel it!")
 		}
-		itemString, _ := itemSet.PopAny()
-		item := rune(itemString[0])
+		item, _ := itemSet.PopAny()
 		score += priority(item)
 	}
 	return score
@@ -75,8 +74,7 @@ func (rucksacks *Rucksacks) findBadges() int {
 		if itemSet.Len() != 1 {
 			logrus.Fatal("Something's wrong here, I can feel it!")
 		}
-		itemString, _ := itemSet.PopAny()
-		item := rune(itemString[0])
+		item, _ := itemSet.PopAny()
 		score += priority(item)
 	}
 	return score
