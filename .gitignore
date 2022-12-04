@@ -1,3 +1,12 @@
+# Ignore all
+*
+# Unignore all with extensions
+!*.*
+# Unignore all dirs
+!*/
+# Ignore MacOS .DS_Store
 .DS_Store
+# Ingore session file
 session
+# Ignore external directories
 */external
