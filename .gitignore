@@ -3,7 +3,9 @@
 # Unignore all with extensions
 !*.*
 # Unignore all dirs
-!*/
+!**/
+# Unignore input directory contents
+!**/input/*
 # Ignore MacOS .DS_Store
 .DS_Store
 # Ingore session file
