@@ -27,7 +27,7 @@ func Puzzle(input *[]byte, part2 bool) string {
 			logrus.Error(err)
 		}
 		if part2 {
-			craneMover9001(stacks, &qty, &src, &dest)
+			crateMover9001(stacks, &qty, &src, &dest)
 		} else {
 			moveCrates(stacks, &qty, &src, &dest)
 		}
@@ -87,7 +87,7 @@ func moveCrates(stacks *[]runeSlice, qty, src, dest *int) {
 	}
 }
 
-func craneMover9001(stacks *[]runeSlice, qty, src, dest *int) {
+func crateMover9001(stacks *[]runeSlice, qty, src, dest *int) {
 	temp := runeSlice{}
 	for i := 0; i < *qty; i++ {
 		temp.push((*stacks)[*src-1].pop())
