@@ -45,7 +45,7 @@ func Puzzle(input *[]byte, part2 bool) string {
 	return strings.ReplaceAll(string(topCrates), " ", "")
 }
 
-func parseInput(input *[]byte) (*[9]runeSlice, *[]string) {
+func parseInput(input *[]byte) (*[]runeSlice, *[]string) {
 	lines := strings.Split(string(*input), "\n")
 	crates, instructions := []string{}, []string{}
 	for i, line := range lines {
@@ -55,13 +55,18 @@ func parseInput(input *[]byte) (*[9]runeSlice, *[]string) {
 			break
 		}
 	}
-	stacks := [9]runeSlice{}
+	stacks := []runeSlice{}
 	for i := len(crates) - 2; i >= 0; i-- {
 		trim := ""
 		for j := 1; j < len(crates[i]); j += 4 {
 			trim = trim + string(crates[i][j])
 		}
 		crates[i] = trim
+		if i == len(crates)-2 {
+			for i := 0; i < len(trim); i++ {
+				stacks = append(stacks, runeSlice{})
+			}
+		}
 		for j, char := range crates[i] {
 			if char == ' ' {
 				continue
@@ -74,7 +79,7 @@ func parseInput(input *[]byte) (*[9]runeSlice, *[]string) {
 	return &stacks, &instructions
 }
 
-func moveCrates(stacks *[9]runeSlice, qty, src, dest *int) {
+func moveCrates(stacks *[]runeSlice, qty, src, dest *int) {
 	for i := 0; i < *qty; i++ {
 		logrus.Debug("Moving ", string((*stacks)[*src-1].last()), " from ", *src, " to ", *dest)
 		(*stacks)[*dest-1].push((*stacks)[*src-1].pop())
@@ -82,7 +87,7 @@ func moveCrates(stacks *[9]runeSlice, qty, src, dest *int) {
 	}
 }
 
-func craneMover9001(stacks *[9]runeSlice, qty, src, dest *int) {
+func craneMover9001(stacks *[]runeSlice, qty, src, dest *int) {
 	temp := runeSlice{}
 	for i := 0; i < *qty; i++ {
 		temp.push((*stacks)[*src-1].pop())
@@ -92,7 +97,7 @@ func craneMover9001(stacks *[9]runeSlice, qty, src, dest *int) {
 	}
 }
 
-func printStacks(stacks *[9]runeSlice) {
+func printStacks(stacks *[]runeSlice) {
 	for i := 8; i >= 0; i-- {
 		row := ""
 		for _, stack := range *stacks {
