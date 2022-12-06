@@ -29,26 +29,19 @@ func (c *runeSlice) unique() bool {
 	return true
 }
 
-func Puzzle(input *[]byte, part2 bool) int {
+func Puzzle(input *[]byte, markerLen int) int {
 	//logrus.SetLevel(logrus.DebugLevel)
-	var markerComplete int
 	marker := runeSlice{}
-	markerLen := 3 // account for zero index
-	if part2 {
-		markerLen = 13
-	}
 	for i, char := range strings.TrimSpace(string(*input)) {
 		marker.push(char)
-		if i < markerLen {
+		if i < markerLen-1 { // account for zero index
 			continue
 		}
 		if marker.unique() {
-			logrus.Debug(string(marker))
-			markerComplete = i + 1 // account for zero index
-			break
+			logrus.Debug(string(marker), i+1)
+			return i + 1 // account for zero index
 		}
 		marker.pull()
 	}
-	logrus.Debug(markerComplete)
-	return markerComplete
+	return -1
 }
