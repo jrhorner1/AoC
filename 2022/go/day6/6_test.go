@@ -31,7 +31,7 @@ var (
 func Test_p1(t *testing.T) {
 	for i, example := range examples {
 		input := []byte(example)
-		got := Puzzle(&input, false)
+		got := Puzzle(&input, 4)
 		want := answers[i]
 		if got != want {
 			t.Errorf("got %d, wanted %d", got, want)
@@ -42,7 +42,7 @@ func Test_p1(t *testing.T) {
 func Test_p2(t *testing.T) {
 	for i, example := range examples {
 		input := []byte(example)
-		got := Puzzle(&input, true)
+		got := Puzzle(&input, 14)
 		want := answers[i+index]
 		if got != want {
 			t.Errorf("got %d, wanted %d", got, want)
