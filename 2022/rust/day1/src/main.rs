@@ -1,7 +1,3 @@
-/* 
-Advent of Code 2022
-Day 1 - Rust
-*/
 use std::fs;
 
 fn main() {
@@ -25,14 +21,6 @@ fn main() {
     elves.sort();
     let most_calories = elves.last().unwrap();
     println!("Part 1: {}", most_calories);
-    let mut top_three_total = 0;
-    let mut count = 0;
-    for elf in elves.iter().rev() {
-        count += 1;
-        top_three_total += elf;
-        if count == 3 {
-            break
-        }
-    }
+    let top_three_total = most_calories + elves[elves.len() - 2] + elves[elves.len() - 3];
     println!("Part 2: {}", top_three_total)
 }
