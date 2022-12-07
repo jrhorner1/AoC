@@ -4,10 +4,7 @@ year=${year:=`date +%Y`}
 yr=`echo ${year} | sed -E 's/20([0-9]{2})/\1/'`
 day=${day:=`date +%-d`}
 repo="github.com/jrhorner1/AoC"
-sed_opts="-i"
-if [[ ! ${OSTYPE} == "linux-gnu" ]]; then
-    sed_opts="-i ''"
-fi
+sed_opts="-i.bak"
 
 mkdir -p ${year}/{input,go}
 mkdir -p ${year}/go/day${day}
@@ -31,4 +28,15 @@ fi
 if [[ ! -f ${year}/go/day${day}/${day}_test.go ]]; then
     cp templates/go/day_test ${year}/go/day${day}/${day}_test.go
     sed ${sed_opts} -e "s|package day0|package day${day}|" ${year}/go/day${day}/${day}_test.go
+fi
+
+# Cleanup sed .bak files
+if [[ -f ${year}/go/${year}.go.bak ]]; then
+    rm ${year}/go/${year}.go.bak
+fi
+if [[ -f ${year}/go/day${day}/${day}.go.bak ]]; then
+    rm ${year}/go/day${day}/${day}.go.bak
+fi
+if [[ -f ${year}/go/day${day}/${day}_test.go.bak ]]; then
+    rm ${year}/go/day${day}/${day}_test.go.bak
 fi
