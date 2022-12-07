@@ -8,10 +8,9 @@ import (
 )
 
 func Puzzle(input *[]byte, part2 bool) int {
-	var fs *Directory
+	fs := newDirectory("/", nil)
 	for i, command := range strings.Split(strings.TrimSpace(string(*input)), "\n$ ") {
 		if i == 0 {
-			fs = newDirectory("/", nil)
 			command = command[2:] // trim leading $ and space
 		}
 		switch command[:2] {
