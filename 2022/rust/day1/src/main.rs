@@ -14,13 +14,13 @@ fn main() {
                 Ok(calories) => calories,
                 Err(_) => continue,
             };
-            total_calories += calories
+            total_calories += calories;
         }
-        elves.push(total_calories)
+        elves.push(total_calories);
     }
     elves.sort();
     let most_calories = elves.last().unwrap();
     println!("Part 1: {}", most_calories);
     let top_three_total = most_calories + elves[elves.len() - 2] + elves[elves.len() - 3];
-    println!("Part 2: {}", top_three_total)
+    println!("Part 2: {}", top_three_total);
 }
