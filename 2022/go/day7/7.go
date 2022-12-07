@@ -2,7 +2,6 @@ package day7
 
 import (
 	"fmt"
-	"regexp"
 	"strings"
 
 	"github.com/sirupsen/logrus"
@@ -19,37 +18,29 @@ type Directory struct {
 	name           string
 	parent         *Directory
 	subDirectories map[string]*Directory
-	files          map[string]*File
-}
-
-type File struct {
-	size int
-	name string
+	files          map[string]int
+	pwd            *Directory
 }
 
 func Puzzle(input *[]byte, part2 bool) int {
-	//logrus.SetLevel(logrus.DebugLevel)
 	var fs *Directory
-	var currentDir *Directory
 	for i, command := range strings.Split(strings.TrimSpace(string(*input)), "\n$ ") {
 		if i == 0 {
 			fs = newDirectory("/", nil)
-			command = command[2:] // trim leading $
+			fs.pwd = fs
+			command = command[2:] // trim leading $ and space
 		}
-		cd_re := regexp.MustCompile(`^cd`)
-		ls_re := regexp.MustCompile(`^ls`)
-		if cd_re.Match([]byte(command)) {
-			currentDir = cd(command, currentDir, fs)
-		} else if ls_re.Match([]byte(command)) {
-			ls(command, currentDir)
+		if command[:2] == "cd" {
+			fs.pwd = fs.cd(command[3:])
+		} else if command[:2] == "ls" {
+			fs.ls(strings.Split(strings.TrimSpace(command), "\n")[1:])
 			continue
 		}
 	}
-	// return to root so that sizes get populated properly
-	for currentDir.parent != nil {
-		currentDir = cd("cd ..", currentDir, fs)
+	// traverse back up to root so that directory sizes get populated properly
+	for fs.pwd.parent != nil {
+		fs.pwd = fs.cd("..")
 	}
-	logrus.Debug(fs.name, " ", fs.size)
 	if part2 {
 		freeSpace := fsLimit - fs.size
 		targetSize := freeNeeded - freeSpace
@@ -58,50 +49,32 @@ func Puzzle(input *[]byte, part2 bool) int {
 	return sumUnderLimit(fs)
 }
 
-func cd(line string, dir *Directory, root *Directory) *Directory {
-	var argument string
-	_, err := fmt.Sscanf(line, "cd %s", &argument)
-	if err != nil {
-		logrus.Error(err, ": ", line)
-	}
+func (fs *Directory) cd(argument string) *Directory {
 	switch argument {
 	case "/":
-		return root
+		return fs
 	case "..":
-		logrus.Debugf("Changing directory: %s to %s", dir.name, dir.parent.name)
-		dir.parent.size += dir.size
-		return dir.parent
+		fs.pwd.parent.size += fs.pwd.size
+		return fs.pwd.parent
 	default:
-		logrus.Debugf("Changing directory: %s to %s", dir.name, dir.subDirectories[argument].name)
-		return dir.subDirectories[argument]
+		return fs.pwd.subDirectories[argument]
 	}
 }
 
-func ls(output string, dir *Directory) {
-	for i, line := range strings.Split(strings.TrimSpace(output), "\n") {
-		logrus.Debugf("Line: '%s'", line)
-		if i == 0 {
-			continue // skip command line
-		}
-		if strings.Contains(line, "dir") {
-			var name string
-			n, err := fmt.Sscanf(line, "dir %s", &name)
-			if err != nil {
-				logrus.Error(err, ": ", line)
-			}
-			logrus.Debugf("Scanned %d", n)
-			dir.subDirectories[name] = newDirectory(name, dir)
-			logrus.Debugf("Added directory: %s %d %s", dir.name, dir.size, name)
+func (fs *Directory) ls(output []string) {
+	for _, line := range output {
+		var name string
+		if line[:3] == "dir" {
+			name = line[4:]
+			fs.pwd.subDirectories[name] = newDirectory(name, fs.pwd)
 		} else {
-			file := &File{}
-			n, err := fmt.Sscanf(line, "%d %s", &file.size, &file.name)
-			logrus.Debugf("Scanned %d", n)
+			var size int
+			_, err := fmt.Sscanf(line, "%d %s", &size, &name)
 			if err != nil {
 				logrus.Error(err, ": ", line)
 			}
-			dir.files[file.name] = file
-			dir.size += file.size
-			logrus.Debugf("Added file: %s %d %s %d", dir.name, dir.size, file.name, file.size)
+			fs.pwd.files[name] = size
+			fs.pwd.size += size
 		}
 	}
 }
@@ -112,14 +85,14 @@ func newDirectory(name string, parent *Directory) *Directory {
 		name:           name,
 		parent:         parent,
 		subDirectories: make(map[string]*Directory),
-		files:          make(map[string]*File),
+		files:          make(map[string]int),
+		pwd:            nil,
 	}
 }
 
 func sumUnderLimit(dir *Directory) int {
 	sum := 0
 	if dir.size < sizeLimit {
-		logrus.Debugf("Adding %d from %s", dir.size, dir.name)
 		sum += dir.size
 	}
 	for _, subDir := range dir.subDirectories {
