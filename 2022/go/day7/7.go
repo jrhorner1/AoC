@@ -44,9 +44,9 @@ func Puzzle(input *[]byte, part2 bool) int {
 	if part2 {
 		freeSpace := fsLimit - fs.size
 		targetSize := freeNeeded - freeSpace
-		return smallestDir(fs, targetSize)
+		return fs.smallestDir(targetSize)
 	}
-	return sumUnderLimit(fs)
+	return fs.sumUnderLimit()
 }
 
 func (fs *Directory) cd(argument string) *Directory {
@@ -90,15 +90,15 @@ func newDirectory(name string, parent *Directory) *Directory {
 	}
 }
 
-func sumUnderLimit(dir *Directory) int {
+func (fs *Directory) sumUnderLimit() int {
 	sum := 0
-	if dir.size < sizeLimit {
-		sum += dir.size
+	if fs.size < sizeLimit {
+		sum += fs.size
 	}
-	for _, subDir := range dir.subDirectories {
+	for _, subDir := range fs.subDirectories {
 		logrus.Debug(subDir.name, " ", subDir.size)
 		if len(subDir.subDirectories) > 0 {
-			sum += sumUnderLimit(subDir)
+			sum += subDir.sumUnderLimit()
 		} else if subDir.size < sizeLimit {
 			sum += subDir.size
 		}
@@ -106,15 +106,15 @@ func sumUnderLimit(dir *Directory) int {
 	return sum
 }
 
-func smallestDir(dir *Directory, targetSize int) int {
-	size := dir.size
-	if dir.size > targetSize {
-		for _, subDir := range dir.subDirectories {
+func (fs *Directory) smallestDir(targetSize int) int {
+	size := fs.size
+	if fs.size > targetSize {
+		for _, subDir := range fs.subDirectories {
 			if subDir.size > targetSize && subDir.size < size {
 				size = subDir.size
 			}
 			if len(subDir.subDirectories) > 0 {
-				subSize := smallestDir(subDir, targetSize)
+				subSize := subDir.smallestDir(targetSize)
 				if subSize > targetSize && subSize < size {
 					size = subSize
 				}
