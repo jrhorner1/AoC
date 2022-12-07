@@ -7,21 +7,6 @@ import (
 	"github.com/sirupsen/logrus"
 )
 
-const (
-	sizeLimit  = 100000
-	fsLimit    = 70000000
-	freeNeeded = 30000000
-)
-
-type Directory struct {
-	size           int
-	name           string
-	parent         *Directory
-	subDirectories map[string]*Directory
-	files          map[string]int
-	pwd            *Directory
-}
-
 func Puzzle(input *[]byte, part2 bool) int {
 	var fs *Directory
 	for i, command := range strings.Split(strings.TrimSpace(string(*input)), "\n$ ") {
@@ -30,11 +15,14 @@ func Puzzle(input *[]byte, part2 bool) int {
 			fs.pwd = fs
 			command = command[2:] // trim leading $ and space
 		}
-		if command[:2] == "cd" {
+		switch command[:2] {
+		case "cd":
 			fs.pwd = fs.cd(command[3:])
-		} else if command[:2] == "ls" {
+		case "ls":
 			fs.ls(strings.Split(strings.TrimSpace(command), "\n")[1:])
 			continue
+		default:
+			logrus.Panic("404 Command not found.")
 		}
 	}
 	// traverse back up to root so that directory sizes get populated properly
@@ -42,41 +30,23 @@ func Puzzle(input *[]byte, part2 bool) int {
 		fs.pwd = fs.cd("..")
 	}
 	if part2 {
+		const fsLimit = 70000000
+		const freeNeeded = 30000000
 		freeSpace := fsLimit - fs.size
 		targetSize := freeNeeded - freeSpace
-		return fs.smallestDir(targetSize)
+		return fs.smallestSubDirSize(targetSize)
 	}
-	return fs.sumUnderLimit()
+	const sizeLimit = 100000
+	return fs.sumUnderLimit(sizeLimit)
 }
 
-func (fs *Directory) cd(argument string) *Directory {
-	switch argument {
-	case "/":
-		return fs
-	case "..":
-		fs.pwd.parent.size += fs.pwd.size
-		return fs.pwd.parent
-	default:
-		return fs.pwd.subDirectories[argument]
-	}
-}
-
-func (fs *Directory) ls(output []string) {
-	for _, line := range output {
-		var name string
-		if line[:3] == "dir" {
-			name = line[4:]
-			fs.pwd.subDirectories[name] = newDirectory(name, fs.pwd)
-		} else {
-			var size int
-			_, err := fmt.Sscanf(line, "%d %s", &size, &name)
-			if err != nil {
-				logrus.Error(err, ": ", line)
-			}
-			fs.pwd.files[name] = size
-			fs.pwd.size += size
-		}
-	}
+type Directory struct {
+	size           int
+	name           string
+	parent         *Directory
+	subDirectories map[string]*Directory
+	files          map[string]int
+	pwd            *Directory
 }
 
 func newDirectory(name string, parent *Directory) *Directory {
@@ -90,31 +60,61 @@ func newDirectory(name string, parent *Directory) *Directory {
 	}
 }
 
-func (fs *Directory) sumUnderLimit() int {
-	sum := 0
-	if fs.size < sizeLimit {
-		sum += fs.size
+func (d *Directory) cd(argument string) *Directory {
+	switch argument {
+	case "/":
+		return d
+	case "..":
+		d.pwd.parent.size += d.pwd.size
+		return d.pwd.parent
+	default:
+		return d.pwd.subDirectories[argument]
 	}
-	for _, subDir := range fs.subDirectories {
+}
+
+func (d *Directory) ls(output []string) {
+	for _, line := range output {
+		var name string
+		if line[:3] == "dir" {
+			name = line[4:]
+			d.pwd.subDirectories[name] = newDirectory(name, d.pwd)
+		} else {
+			var size int
+			_, err := fmt.Sscanf(line, "%d %s", &size, &name)
+			if err != nil {
+				logrus.Error(err, ": ", line)
+			}
+			d.pwd.files[name] = size
+			d.pwd.size += size
+		}
+	}
+}
+
+func (d *Directory) sumUnderLimit(limit int) int {
+	sum := 0
+	if d.size < limit {
+		sum += d.size
+	}
+	for _, subDir := range d.subDirectories {
 		logrus.Debug(subDir.name, " ", subDir.size)
 		if len(subDir.subDirectories) > 0 {
-			sum += subDir.sumUnderLimit()
-		} else if subDir.size < sizeLimit {
+			sum += subDir.sumUnderLimit(limit)
+		} else if subDir.size < limit {
 			sum += subDir.size
 		}
 	}
 	return sum
 }
 
-func (fs *Directory) smallestDir(targetSize int) int {
-	size := fs.size
-	if fs.size > targetSize {
-		for _, subDir := range fs.subDirectories {
+func (d *Directory) smallestSubDirSize(targetSize int) int {
+	size := d.size
+	if d.size > targetSize {
+		for _, subDir := range d.subDirectories {
 			if subDir.size > targetSize && subDir.size < size {
 				size = subDir.size
 			}
 			if len(subDir.subDirectories) > 0 {
-				subSize := subDir.smallestDir(targetSize)
+				subSize := subDir.smallestSubDirSize(targetSize)
 				if subSize > targetSize && subSize < size {
 					size = subSize
 				}
