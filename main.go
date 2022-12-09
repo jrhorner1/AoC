@@ -15,9 +15,11 @@ import (
 	y20 "github.com/jrhorner1/AoC/2020/go"
 	y21 "github.com/jrhorner1/AoC/2021/go"
 	y22 "github.com/jrhorner1/AoC/2022/go"
+	log "github.com/sirupsen/logrus"
 )
 
 func main() {
+	start := time.Now()
 	var year, day int
 	flag.IntVar(&year, "y", time.Now().Year(), "Year to run a puzzle solution from. Defaults to the current year.")
 	flag.IntVar(&day, "d", time.Now().Day(), "Day to run a puzzle solution from. Defaults to the current day.")
@@ -43,5 +45,5 @@ func main() {
 	default:
 		panic("Either advent of code didn't exist, or the year you're looking for isn't here yet.")
 	}
-
+	log.Infof("Running time: %vs", time.Since(start).Seconds())
 }
