@@ -20,13 +20,13 @@ import (
 )
 
 func main() {
-	var year, day, average int
+	var year, day, executions int
 	flag.IntVar(&year, "y", time.Now().Year(), "Year to run a puzzle solution from. Defaults to the current year.")
 	flag.IntVar(&day, "d", time.Now().Day(), "Day to run a puzzle solution from. Defaults to the current day.")
-	flag.IntVar(&average, "a", 1, "Average execution time to solve a puzzle N times. Default is 1.")
+	flag.IntVar(&executions, "a", 1, "Average execution time to solve a puzzle N times. Default is 1.")
 	flag.Parse()
 	averages := []int64{}
-	for i := 0; i < average; i++ {
+	for i := 0; i < executions; i++ {
 		start := time.Now()
 		switch year {
 		case 2015:
@@ -48,13 +48,13 @@ func main() {
 		default:
 			panic("Either advent of code didn't exist, or the year you're looking for isn't here yet.")
 		}
-		if average == 1 {
+		if executions == 1 {
 			log.Infof("Execution time: %vµs", time.Since(start).Microseconds())
 		} else {
 			averages = append(averages, time.Since(start).Microseconds())
 		}
 	}
-	if average > 1 {
-		log.Infof("Average Execution time out of %d: %vµs", average, math.Average(&averages))
+	if executions > 1 {
+		log.Infof("Average Execution time out of %d: %vµs", executions, math.Average(&averages))
 	}
 }
