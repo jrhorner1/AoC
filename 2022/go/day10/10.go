@@ -12,15 +12,14 @@ const (
 	height = 6
 )
 
-var (
-	registerX      = 1
-	cycle          = 0
-	signalStrength []int
-	crt            []bool
-	image          string
-)
-
 func Puzzle(input *[]byte) (int, string) {
+	var (
+		registerX      = 1
+		cycle          = 0
+		signalStrength []int
+		crt            []bool
+		image          string
+	)
 	for _, line := range strings.Split(strings.TrimSpace(string(*input)), "\n") {
 		instruction := strings.Split(strings.TrimSpace(line), " ")
 		switch instruction[0] {
