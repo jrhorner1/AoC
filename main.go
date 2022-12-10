@@ -15,35 +15,46 @@ import (
 	y20 "github.com/jrhorner1/AoC/2020/go"
 	y21 "github.com/jrhorner1/AoC/2021/go"
 	y22 "github.com/jrhorner1/AoC/2022/go"
+	"github.com/jrhorner1/AoC/pkg/math"
 	log "github.com/sirupsen/logrus"
 )
 
 func main() {
-	start := time.Now()
-	var year, day int
+	var year, day, average int
 	flag.IntVar(&year, "y", time.Now().Year(), "Year to run a puzzle solution from. Defaults to the current year.")
 	flag.IntVar(&day, "d", time.Now().Day(), "Day to run a puzzle solution from. Defaults to the current day.")
+	flag.IntVar(&average, "a", 1, "Average execution time to solve a puzzle N times. Default is 1.")
 	flag.Parse()
-
-	switch year {
-	case 2015:
-		y15.Run(&year, &day)
-	case 2016:
-		y16.Run(&year, &day)
-	case 2017:
-		y17.Run(&year, &day)
-	case 2018:
-		y18.Run(&year, &day)
-	case 2019:
-		y19.Run(&year, &day)
-	case 2020:
-		y20.Run(&year, &day)
-	case 2021:
-		y21.Run(&year, &day)
-	case 2022:
-		y22.Run(&year, &day)
-	default:
-		panic("Either advent of code didn't exist, or the year you're looking for isn't here yet.")
+	averages := []int64{}
+	for i := 0; i < average; i++ {
+		start := time.Now()
+		switch year {
+		case 2015:
+			y15.Run(&year, &day)
+		case 2016:
+			y16.Run(&year, &day)
+		case 2017:
+			y17.Run(&year, &day)
+		case 2018:
+			y18.Run(&year, &day)
+		case 2019:
+			y19.Run(&year, &day)
+		case 2020:
+			y20.Run(&year, &day)
+		case 2021:
+			y21.Run(&year, &day)
+		case 2022:
+			y22.Run(&year, &day)
+		default:
+			panic("Either advent of code didn't exist, or the year you're looking for isn't here yet.")
+		}
+		if average == 1 {
+			log.Infof("Execution time: %vµs", time.Since(start).Microseconds())
+		} else {
+			averages = append(averages, time.Since(start).Microseconds())
+		}
 	}
-	log.Infof("Running time: %vs", time.Since(start).Seconds())
+	if average > 1 {
+		log.Infof("Average Execution time out of %d: %vµs", average, math.Average(&averages))
+	}
 }

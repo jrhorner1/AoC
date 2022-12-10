@@ -103,3 +103,11 @@ func Min(a, b interface{}) interface{} {
 	}
 	return nil
 }
+
+func Average(a *[]int64) int64 {
+	sum := int64(0)
+	for _, n := range *a {
+		sum += n
+	}
+	return sum / int64(len(*a))
+}
