@@ -13,3 +13,7 @@ func Run(year, day *int) {
 		panic("What did you expect to find here? It's an advent calendar.")
 	}
 }
+
+func output(year, day *int, part int, solution string) {
+	log.Infof("%d - Day %d - Part %d: %s", *year, *day, part, solution)
+}
