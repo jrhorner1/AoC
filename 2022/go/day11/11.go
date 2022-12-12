@@ -12,10 +12,10 @@ import (
 func Puzzle(input *[]byte, part2 bool) int {
 	monkeys := parseMonkeys(input)
 	rounds := 20
-	tests := []int{}
-	lcm := 0
+	var lcm int
 	if part2 {
 		rounds = 10000
+		tests := []int{}
 		for _, monkey := range monkeys {
 			tests = append(tests, int(monkey.test.value))
 		}
