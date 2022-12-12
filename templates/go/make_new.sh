@@ -14,15 +14,15 @@ if [[ ! -f ${year}/go/${year}.go ]]; then
     sed ${sed_opts} -e "s|package y00|package y${yr}|" ${year}/go/${year}.go
     sed ${sed_opts} \
         -e "s|^)|\ty${yr} \"${repo}/${year}/go\"\n)|" \
-        -e "s|^\tdefault:|\tcase ${year}:\n\t\ty${yr}.Run(&year, &day)\n\tdefault:|" \
+        -e "s|^\tdefault:|\tcase ${year}:\n\t\ty${yr}.Run(\&year, \&day)\n\tdefault:|" \
         main.go
 fi
 if [[ ! -f ${year}/go/day${day}/${day}.go ]]; then
     cp templates/go/day ${year}/go/day${day}/${day}.go
     sed ${sed_opts} -e "s|package day0|package day${day}|" ${year}/go/day${day}/${day}.go
     sed ${sed_opts} \
-        -e "s|^\tlog|\t\"${repo}/${year}/go/day${day}\"\n\tlog|" \
-        -e "s|^\tdefault:|\tcase ${day}:\n\t\tinput, _ := ioutil.ReadFile(\"${year}/input/${day}\")\n\t\toutput(year, day, 1, fmt.Sprint(day${day}.Puzzle(&input, false)))\n\toutput(year, day, 1, fmt.Sprint(day${day}.Puzzle(&input, true)))\n\tdefault:|" \
+        -e "s|^\tlog \"github.com/sirupsen/logrus\"|\t\"${repo}/${year}/go/day${day}\"\n\tlog \"github.com/sirupsen/logrus\"|" \
+        -e "s|^\tdefault:|\tcase ${day}:\n\t\tinput, _ := ioutil.ReadFile(\"${year}/input/${day}\")\n\t\toutput(year, day, 1, fmt.Sprint(day${day}.Puzzle(\&input, false)))\n\t\toutput(year, day, 1, fmt.Sprint(day${day}.Puzzle(\&input, true)))\n\tdefault:|" \
         ${year}/go/${year}.go
 fi
 if [[ ! -f ${year}/go/day${day}/${day}_test.go ]]; then
