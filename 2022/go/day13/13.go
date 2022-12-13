@@ -4,36 +4,70 @@ import (
 	"encoding/json"
 	"fmt"
 	"reflect"
+	"sort"
 	"strings"
 
 	"github.com/sirupsen/logrus"
 )
 
+const dividerPackets string = `[[2]]
+[[6]]`
+
 func Puzzle(input *[]byte, part2 bool) int {
 	//logrus.SetLevel(logrus.DebugLevel)
-	sum := 0
-	for i, pair := range strings.Split(strings.TrimSpace(string(*input)), "\n\n") {
-		var left, right []any
-		for j, line := range strings.Split(strings.TrimSpace(pair), "\n") {
-			var packet *[]any
-			if j == 0 {
-				packet = &left
-			} else {
-				packet = &right
-			}
-			err := json.Unmarshal([]byte(line), packet)
+	var packets Packets
+	for _, pair := range strings.Split(strings.TrimSpace(string(*input)), "\n\n") {
+		for _, line := range strings.Split(strings.TrimSpace(pair), "\n") {
+			var packet []any
+			err := json.Unmarshal([]byte(line), &packet)
 			if err != nil {
 				logrus.Error(err)
 			}
-		}
-		if ok, err := inOrder(&left, &right); err == nil && ok {
-			sum += i + 1
+			packets = append(packets, &packet)
 		}
 	}
 	if part2 {
-		return 42
+		var dividers Packets
+		for _, line := range strings.Split(strings.TrimSpace(dividerPackets), "\n") {
+			var packet []any
+			err := json.Unmarshal([]byte(line), &packet)
+			if err != nil {
+				logrus.Error(err)
+			}
+			packets = append(packets, &packet)
+			dividers = append(dividers, &packet)
+		}
+		sort.Sort(packets)
+		decoderKey := 1
+		for _, divider := range dividers {
+			for i, packet := range packets {
+				if packet == divider {
+					decoderKey *= i + 1
+				}
+			}
+		}
+		return decoderKey
+	}
+	sum := 0
+	index := 1
+	for i, j := 0, 1; j < len(packets); i, j = i+2, j+2 {
+		if ok, err := inOrder(packets[i], packets[j]); err == nil && ok {
+			sum += index
+		}
+		index++
 	}
 	return sum
+}
+
+type Packets []*[]any
+
+func (p Packets) Len() int      { return len(p) }
+func (p Packets) Swap(i, j int) { p[i], p[j] = p[j], p[i] }
+func (p Packets) Less(i, j int) bool {
+	if ok, err := inOrder(p[i], p[j]); err == nil && ok {
+		return true
+	}
+	return false
 }
 
 func inOrder(left, right *[]any) (bool, error) {
