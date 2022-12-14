@@ -49,10 +49,11 @@ func main() {
 		default:
 			panic("Either advent of code didn't exist, or the year you're looking for isn't here yet.")
 		}
-		averages = append(averages, time.Since(execStart).Microseconds())
+		averages = append(averages, time.Since(execStart).Nanoseconds())
 	}
 	if executions > 1 {
-		log.Infof("Average Execution time out of %d: %vµs", executions, math.Average(&averages))
+		average := time.Duration(math.Average(&averages))
+		log.Infof("Average Execution time out of %d: %v", executions, average.String())
 	}
-	log.Infof("Execution time: %vµs", time.Since(start).Microseconds())
+	log.Infof("Execution time: %v", time.Since(start).String())
 }
