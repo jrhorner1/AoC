@@ -9,7 +9,6 @@ import (
 )
 
 func Puzzle(input *[]byte, part2 bool) int {
-	logrus.SetLevel(logrus.DebugLevel)
 	valves := newGraph()
 	valveDests := make(map[string]destinations)
 	for i, line := range strings.Split(strings.TrimSpace(string(*input)), "\n") {
