@@ -11,6 +11,8 @@ import (
 	"github.com/jrhorner1/AoC/2022/go/day13"
 	"github.com/jrhorner1/AoC/2022/go/day14"
 	"github.com/jrhorner1/AoC/2022/go/day15"
+	"github.com/jrhorner1/AoC/2022/go/day16"
+	"github.com/jrhorner1/AoC/2022/go/day17"
 	"github.com/jrhorner1/AoC/2022/go/day2"
 	"github.com/jrhorner1/AoC/2022/go/day3"
 	"github.com/jrhorner1/AoC/2022/go/day4"
@@ -19,8 +21,6 @@ import (
 	"github.com/jrhorner1/AoC/2022/go/day7"
 	"github.com/jrhorner1/AoC/2022/go/day8"
 	"github.com/jrhorner1/AoC/2022/go/day9"
-	"github.com/jrhorner1/AoC/2022/go/day16"
-	"github.com/jrhorner1/AoC/2022/go/day17"
 	log "github.com/sirupsen/logrus"
 )
 
@@ -93,8 +93,8 @@ func Run(year, day *int) {
 		output(year, day, 2, fmt.Sprint(day16.Puzzle(&input, true)))
 	case 17:
 		input, _ := ioutil.ReadFile("2022/input/17")
-		output(year, day, 1, fmt.Sprint(day17.Puzzle(&input, false)))
-		output(year, day, 2, fmt.Sprint(day17.Puzzle(&input, true)))
+		output(year, day, 1, fmt.Sprint(day17.Puzzle(&input, 2022)))
+		output(year, day, 2, fmt.Sprint(day17.Puzzle(&input, 1000000000000)))
 	default:
 		panic("unimplemented")
 	case 26, 27, 28, 29, 30, 31:
