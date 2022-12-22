@@ -2,6 +2,8 @@ package day21
 
 import (
 	"testing"
+
+	"github.com/sirupsen/logrus"
 )
 
 const example string = `root: pppw + sjmn
@@ -22,6 +24,7 @@ hmdt: 32
 `
 
 func Test_p1(t *testing.T) {
+	logrus.SetLevel(logrus.DebugLevel)
 	input := []byte(example)
 	got := Puzzle(&input, false)
 	want := int(152)
@@ -31,6 +34,7 @@ func Test_p1(t *testing.T) {
 }
 
 func Test_p2(t *testing.T) {
+	logrus.SetLevel(logrus.DebugLevel)
 	input := []byte(example)
 	got := Puzzle(&input, true)
 	want := int(301)

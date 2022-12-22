@@ -7,47 +7,68 @@ import (
 	"github.com/sirupsen/logrus"
 )
 
+type Monkey struct {
+	id, lstr, rstr string
+	value          int
+	op             rune
+}
+
 func Puzzle(input *[]byte, part2 bool) int {
-	lines := make(map[string]string)
-	for _, line := range strings.Split(strings.TrimSpace(string(*input)), "\n") {
-		l := strings.Split(strings.TrimSpace(line), ":")
-		lines[l[0]] = l[1]
+	monkeys, lookup := parseRiddle(input)
+	if part2 {
+		return monkeys[lookup["humn"]].value
 	}
-	monkeys := make(map[string]int)
-	for len(lines) != 0 {
-		for id, value := range lines {
-			if len(value) < 11 {
-				number, err := strconv.Atoi(strings.TrimSpace(value))
-				if err != nil {
-					logrus.Error(err)
-				}
-				monkeys[id] = number
-				delete(lines, id)
-			}
-			if len(value) >= 11 {
-				l := strings.Split(strings.TrimSpace(value), " ")
-				if a, ok := monkeys[l[0]]; ok {
-					if b, ok := monkeys[l[2]]; ok {
-						switch l[1] {
-						case "*":
-							monkeys[id] = a * b
-						case "/":
-							monkeys[id] = a / b
-						case "+":
-							monkeys[id] = a + b
-						case "-":
-							monkeys[id] = a - b
-						default:
-							logrus.Errorf("What kind of operation is that? ( %s )", l[1])
-						}
-						delete(lines, id)
-					}
-				}
-			}
+	return valueOf("root", &monkeys, &lookup)
+}
+
+func valueOf(id string, monkeys *[]Monkey, lookup *map[string]int) int {
+	monkey := (*monkeys)[(*lookup)[id]]
+	if monkey.value != 0 {
+		return monkey.value
+	} else {
+		switch monkey.op {
+		case '+':
+			(*monkeys)[(*lookup)[id]].value = valueOf(monkey.lstr, monkeys, lookup) + valueOf(monkey.rstr, monkeys, lookup)
+		case '-':
+			(*monkeys)[(*lookup)[id]].value = valueOf(monkey.lstr, monkeys, lookup) - valueOf(monkey.rstr, monkeys, lookup)
+		case '*':
+			(*monkeys)[(*lookup)[id]].value = valueOf(monkey.lstr, monkeys, lookup) * valueOf(monkey.rstr, monkeys, lookup)
+		case '/':
+			(*monkeys)[(*lookup)[id]].value = valueOf(monkey.lstr, monkeys, lookup) / valueOf(monkey.rstr, monkeys, lookup)
+		default:
+			logrus.Errorf("Unknown operation: %v", monkey.op)
 		}
 	}
-	if part2 {
-		return monkeys["humn"]
+	return (*monkeys)[(*lookup)[id]].value
+}
+
+func parseRiddle(input *[]byte) ([]Monkey, map[string]int) {
+	lookup := make(map[string]int)
+	monkeys := []Monkey{}
+	for _, line := range strings.Split(strings.TrimSpace(string(*input)), "\n") {
+		monkey := Monkey{}
+		m := strings.Split(strings.TrimSpace(line), ":")
+		monkey.id = m[0]
+		l := strings.Split(strings.TrimSpace(m[1]), " ")
+		switch len(l) {
+		case 1:
+			number, err := strconv.Atoi(l[0])
+			if err != nil {
+				logrus.Error(err)
+			}
+			monkey.value = number
+		case 3:
+			monkey.lstr = l[0]
+			monkey.rstr = l[2]
+			if len(l[1]) != 1 {
+				logrus.Errorf("Something went wrong: {%v}", l[1])
+			}
+			monkey.op = rune(l[1][0])
+		default:
+			logrus.Errorf("Something went wrong: {%v}", l)
+		}
+		monkeys = append(monkeys, monkey)
+		lookup[monkey.id] = len(monkeys) - 1
 	}
-	return monkeys["root"]
+	return monkeys, lookup
 }
