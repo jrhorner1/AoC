@@ -15,6 +15,7 @@ import (
 	"github.com/jrhorner1/AoC/2022/go/day17"
 	"github.com/jrhorner1/AoC/2022/go/day2"
 	"github.com/jrhorner1/AoC/2022/go/day20"
+	"github.com/jrhorner1/AoC/2022/go/day21"
 	"github.com/jrhorner1/AoC/2022/go/day3"
 	"github.com/jrhorner1/AoC/2022/go/day4"
 	"github.com/jrhorner1/AoC/2022/go/day5"
@@ -22,7 +23,6 @@ import (
 	"github.com/jrhorner1/AoC/2022/go/day7"
 	"github.com/jrhorner1/AoC/2022/go/day8"
 	"github.com/jrhorner1/AoC/2022/go/day9"
-	"github.com/jrhorner1/AoC/2022/go/day21"
 	log "github.com/sirupsen/logrus"
 )
 
