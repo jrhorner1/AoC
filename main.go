@@ -7,6 +7,9 @@ import (
 	"flag"
 	"time"
 
+	"github.com/jrhorner1/AoC/pkg/math"
+	log "github.com/sirupsen/logrus"
+
 	y15 "github.com/jrhorner1/AoC/2015/go"
 	y16 "github.com/jrhorner1/AoC/2016/go"
 	y17 "github.com/jrhorner1/AoC/2017/go"
@@ -15,8 +18,7 @@ import (
 	y20 "github.com/jrhorner1/AoC/2020/go"
 	y21 "github.com/jrhorner1/AoC/2021/go"
 	y22 "github.com/jrhorner1/AoC/2022/go"
-	"github.com/jrhorner1/AoC/pkg/math"
-	log "github.com/sirupsen/logrus"
+	y23 "github.com/jrhorner1/AoC/2023/go"
 )
 
 func main() {
@@ -46,6 +48,8 @@ func main() {
 			y21.Run(&year, &day)
 		case 2022:
 			y22.Run(&year, &day)
+		case 2023:
+			y23.Run(&year, &day)
 		default:
 			panic("Either advent of code didn't exist, or the year you're looking for isn't here yet.")
 		}
