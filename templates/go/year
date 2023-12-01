@@ -3,6 +3,7 @@ package y00
 import (
 	"fmt"
 	"io/ioutil"
+	log "github.com/sirupsen/logrus"
 )
 
 func Run(year, day *int) {
