@@ -1,6 +1,7 @@
 package day4
 
 import (
+	"strconv"
 	"strings"
 
 	log "github.com/sirupsen/logrus"
@@ -13,11 +14,11 @@ type card struct {
 func Puzzle(input *[]byte, part2 bool) int {
 	//log.SetLevel(log.DebugLevel)
 	cards := []card{}
-	for i, line := range strings.Split(strings.TrimSpace(string(*input)), "\n") {
+	for _, line := range strings.Split(strings.TrimSpace(string(*input)), "\n") {
 		if len(line) == 0 {
 			continue
 		}
-		newCard := card{id: i, matches: 0, points: 0, quantity: 1}
+		newCard := card{id: -1, matches: 0, points: 0, quantity: 1}
 		cardSlice := strings.Split(strings.ReplaceAll(line, "  ", " "), " | ")
 		log.Debug(cardSlice)
 		win := strings.Split(cardSlice[0], " ")
@@ -25,7 +26,15 @@ func Puzzle(input *[]byte, part2 bool) int {
 		have := strings.Split(cardSlice[1], " ")
 		log.Debug(have)
 		for i, n := range win {
-			if i == 0 || i == 1 {
+			if i == 0 {
+				continue
+			}
+			if i == 1 {
+				id, err := strconv.Atoi(strings.ReplaceAll(n, ":", ""))
+				if err != nil {
+					log.Error(err)
+				}
+				newCard.id = id
 				continue
 			}
 			for _, h := range have {
