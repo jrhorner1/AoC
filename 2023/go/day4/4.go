@@ -19,7 +19,7 @@ func Puzzle(input *[]byte, part2 bool) int {
 			continue
 		}
 		newCard := card{id: -1, matches: 0, points: 0, quantity: 1}
-		cardSlice := strings.Split(strings.ReplaceAll(line, "  ", " "), " | ")
+		cardSlice := strings.Split(strings.ReplaceAll(strings.ReplaceAll(line, "  ", " "), "  ", " "), " | ")
 		log.Debug(cardSlice)
 		win := strings.Split(cardSlice[0], " ")
 		log.Debug(win)
