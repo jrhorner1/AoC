@@ -1,9 +1,11 @@
 package day1
 
 import (
+	"fmt"
 	"regexp"
 	"strconv"
 	"strings"
+	"unicode"
 
 	log "github.com/sirupsen/logrus"
 )
@@ -39,20 +41,19 @@ func Puzzle(input *[]byte, part2 bool) int {
 }
 
 func parseDigit(cs string) string {
-	kv := map[string]string{
-		"one":   "o1e",
-		"two":   "t2o",
-		"three": "t3e",
-		"four":  "f4r",
-		"five":  "f5e",
-		"six":   "s6x",
-		"seven": "s7n",
-		"eight": "e8t",
-		"nine":  "n9e",
+	digits := []string{"one", "two", "three", "four", "five", "six", "seven", "eight", "nine"}
+	ncs := ""
+	for i, r := range cs {
+		if unicode.IsDigit(r) {
+			ncs += string(r)
+			continue
+		}
+		for d, digit := range digits {
+			re := regexp.MustCompile(digit)
+			if re.Match([]byte(cs[i:])) {
+				ncs += fmt.Sprint(d + 1)
+			}
+		}
 	}
-	for k, v := range kv {
-		re := regexp.MustCompile(k)
-		cs = string(re.ReplaceAll([]byte(cs), []byte(v)))
-	}
-	return cs
+	return ncs
 }
