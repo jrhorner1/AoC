@@ -33,4 +33,4 @@ input = f.read()
 
 print("2023 - Day 2 - Part 1:", puzzle(input, False))
 print("2023 - Day 2 - Part 2:", puzzle(input, True))
-print("Execution time: %.3fµs" % ((time.time() - startTime)*1000))
+print("Execution time: %.3fms" % ((time.time() - startTime)*1000))
