@@ -2,6 +2,8 @@ package day1
 
 import (
 	"testing"
+
+	log "github.com/sirupsen/logrus"
 )
 
 const example1 string = `1abc2
@@ -11,6 +13,7 @@ treb7uchet
 `
 
 func Test_p1(t *testing.T) {
+	log.SetLevel(log.DebugLevel)
 	input := []byte(example1)
 	got := Puzzle(&input, false)
 	want := 142
@@ -29,6 +32,7 @@ zoneight234
 `
 
 func Test_p2(t *testing.T) {
+	log.SetLevel(log.DebugLevel)
 	input := []byte(example2)
 	got := Puzzle(&input, true)
 	want := 281
