@@ -49,7 +49,7 @@ func parseDigit(cs string) string {
 			continue
 		}
 		for d, digit := range digits {
-			re := regexp.MustCompile(digit)
+			re := regexp.MustCompile("^" + digit)
 			if re.Match([]byte(cs[i:])) {
 				ncs += fmt.Sprint(d + 1)
 			}
