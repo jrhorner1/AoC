@@ -1,6 +1,7 @@
 package day9
 
 import (
+	"slices"
 	"strconv"
 	"strings"
 
@@ -19,6 +20,7 @@ func Puzzle(input *[]byte, part2 bool) int {
 			}
 			history = append(history, number)
 		}
+		log.Debug("History: ", history)
 		next := extrapolate(&history, &part2)
 		log.Debug("Next: ", next)
 		values = append(values, next)
@@ -43,7 +45,7 @@ func extrapolate(history *[]int, part2 *bool) int {
 		diffs = append(diffs, (*history)[i]-(*history)[i-1])
 	}
 	log.Debug("Diffs: ", diffs)
-	if allSame(&diffs) {
+	if len(slices.Compact(slices.Clone(diffs))) == 1 {
 		increment = diffs[0]
 	} else {
 		increment = extrapolate(&diffs, part2)
@@ -53,14 +55,4 @@ func extrapolate(history *[]int, part2 *bool) int {
 		return first - increment
 	}
 	return last + increment
-}
-
-func allSame(diffs *[]int) bool {
-	first := (*diffs)[0]
-	for _, diff := range (*diffs)[1:] {
-		if diff != first {
-			return false
-		}
-	}
-	return true
 }
