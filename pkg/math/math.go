@@ -111,3 +111,24 @@ func Average(a *[]int64) int64 {
 	}
 	return sum / int64(len(*a))
 }
+
+func LCM(a, b int64) int64 {
+	gcd, lcm := int64(1), int64(1)
+	if a > b {
+		gcd = GCD(b, a)
+		lcm = b * (a / gcd)
+	} else if b > a {
+		gcd = GCD(a, b)
+		lcm = a * (b / gcd)
+	}
+	return lcm
+}
+
+func GCD(l, g int64) int64 {
+	gcd := l
+	r := g % l
+	if r != 0 {
+		gcd = GCD(r, l)
+	}
+	return gcd
+}
