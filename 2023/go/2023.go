@@ -3,7 +3,11 @@ package y23
 import (
 	"fmt"
 	"io/ioutil"
+
 	"github.com/jrhorner1/AoC/2023/go/day1"
+	"github.com/jrhorner1/AoC/2023/go/day10"
+	"github.com/jrhorner1/AoC/2023/go/day11"
+	"github.com/jrhorner1/AoC/2023/go/day12"
 	"github.com/jrhorner1/AoC/2023/go/day2"
 	"github.com/jrhorner1/AoC/2023/go/day3"
 	"github.com/jrhorner1/AoC/2023/go/day4"
@@ -53,6 +57,18 @@ func Run(year, day *int) {
 		input, _ := ioutil.ReadFile("2023/input/9")
 		output(year, day, 1, fmt.Sprint(day9.Puzzle(&input, false)))
 		output(year, day, 2, fmt.Sprint(day9.Puzzle(&input, true)))
+	case 10:
+		input, _ := ioutil.ReadFile("2023/input/10")
+		output(year, day, 1, fmt.Sprint(day10.Puzzle(&input, false)))
+		output(year, day, 2, fmt.Sprint(day10.Puzzle(&input, true)))
+	case 11:
+		input, _ := ioutil.ReadFile("2023/input/11")
+		output(year, day, 1, fmt.Sprint(day11.Puzzle(&input, 2)))
+		output(year, day, 2, fmt.Sprint(day11.Puzzle(&input, 1000000)))
+	case 12:
+		input, _ := ioutil.ReadFile("2023/input/12")
+		output(year, day, 1, fmt.Sprint(day12.Puzzle(&input, false)))
+		output(year, day, 2, fmt.Sprint(day12.Puzzle(&input, true)))
 	default:
 		panic("unimplemented")
 	case 26, 27, 28, 29, 30, 31:
