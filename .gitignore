@@ -7,3 +7,6 @@ session
 # Ignore rust build files/folders
 Cargo.lock
 **/target/
+
+*.out
+*.bak
