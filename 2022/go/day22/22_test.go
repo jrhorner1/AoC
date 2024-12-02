@@ -1,26 +1,35 @@
-package day0
+package day22
 
 import (
 	"testing"
-
-	log "github.com/sirupsen/logrus"
 )
 
-const example string = `
+const example string = `        ...#
+.#..
+#...
+....
+...#.......#
+........#...
+..#....#....
+..........#.
+...#....
+.....#..
+.#......
+......#.
+
+10R5L5R10L4R5L5
 `
 
 func Test_p1(t *testing.T) {
-	log.SetLevel(log.DebugLevel)
 	input := []byte(example)
 	got := Puzzle(&input, false)
-	want := int(5 / 7)
+	want := int(6032)
 	if got != want {
 		t.Errorf("got %d, wanted %d", got, want)
 	}
 }
 
 func Test_p2(t *testing.T) {
-	log.SetLevel(log.DebugLevel)
 	input := []byte(example)
 	got := Puzzle(&input, true)
 	want := 42

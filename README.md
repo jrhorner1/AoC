@@ -8,6 +8,11 @@ Puzzle solutions are meant to be run from the root of the repo. Without any argu
 ./main.go -y 2015 -d 2
 ```
 
+### Tests
+```bash
+go test github.com/jrhorner1/AoC/2023/go/day1 -v
+```
+
 ### Utilities
 Setup todays puzzle:
 ```bash

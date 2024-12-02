@@ -15,11 +15,10 @@ type Monkey struct {
 }
 
 func Puzzle(input *[]byte, part2 bool) uint64 {
-	monkeys, lookup := parseRiddle(input)
+	monkeys := parseRiddle(input)
 	if part2 {
-		root, humn := &monkeys[lookup["root"]], &monkeys[lookup["humn"]]
-		humn.value = 0
-		for root.left.value == 0 && root.right.value == 0 {
+		monkeys["humn"].value = 0
+		for monkeys["root"].left.value == 0 && monkeys["root"].right.value == 0 {
 			for i, monkey := range monkeys {
 				if monkey.id != "humn" && monkey.value == 0 {
 					if monkey.left.value != 0 && monkey.right.value != 0 {
@@ -28,17 +27,16 @@ func Puzzle(input *[]byte, part2 bool) uint64 {
 				}
 			}
 		}
-		if root.right.value != 0 {
-			root.left.value = root.right.value
-			root.left.number(part2)
+		if monkeys["root"].right.value != 0 {
+			monkeys["root"].left.value = monkeys["root"].right.value
+			monkeys["root"].left.number(part2)
 		} else {
-			root.right.value = root.left.value
-			root.right.number(part2)
+			monkeys["root"].right.value = monkeys["root"].left.value
+			monkeys["root"].right.number(part2)
 		}
-		// logrus.Debug(monkeys)
-		return humn.value
+		return monkeys["humn"].value
 	}
-	return monkeys[lookup["root"]].number(part2)
+	return monkeys["root"].number(part2)
 }
 
 func (m *Monkey) number(part2 bool) uint64 {
@@ -48,6 +46,35 @@ func (m *Monkey) number(part2 bool) uint64 {
 			a, b = m.right, m.left
 		}
 		logrus.Debugf("Calculating %v|a %v:%d b %v:%d", m.id, a.id, a.value, b.id, b.value)
+		switch m.op {
+		case '+':
+			a.value = m.value - b.value
+			logrus.Debugf("%v:%d = %v:%d - %v:%d", a.id, a.value, m.id, m.value, b.id, b.value)
+		case '-':
+			if a == m.right {
+				a.value = b.value - m.value
+				logrus.Debugf("%v:%d = %v:%d - %v:%d", a.id, a.value, m.id, m.value, b.id, b.value)
+			} else {
+				a.value = m.value + b.value
+				logrus.Debugf("%v:%d = %v:%d + %v:%d", a.id, a.value, m.id, m.value, b.id, b.value)
+			}
+		case '*':
+			a.value = m.value / b.value
+			logrus.Debugf("%v:%d = %v:%d / %v:%d", a.id, a.value, m.id, m.value, b.id, b.value)
+		case '/':
+			if a == m.right {
+				a.value = b.value / m.value
+				logrus.Debugf("%v:%d = %v:%d / %v:%d", a.id, a.value, m.id, m.value, b.id, b.value)
+			} else {
+				a.value = m.value * b.value
+				logrus.Debugf("%v:%d = %v:%d * %v:%d", a.id, a.value, m.id, m.value, b.id, b.value)
+			}
+		default:
+			logrus.Errorf("Unknown operation: {%c}", rune(m.op))
+		}
+		if a.id != "humn" || (a.left != nil && a.right != nil) {
+			a.number(part2)
+		}
 	} else {
 		if m.value > 0 {
 			return m.value
@@ -58,64 +85,29 @@ func (m *Monkey) number(part2 bool) uint64 {
 		if b.value == 0 {
 			b.number(part2)
 		}
-	}
-	switch m.op {
-	case '+':
-		if part2 {
-			a.value = m.value - b.value
-			logrus.Debugf("%v:%d = %v:%d - %v:%d", a.id, a.value, m.id, m.value, b.id, b.value)
-		} else {
+		switch m.op {
+		case '+':
 			m.value = a.value + b.value
 			logrus.Debugf("%v:%d = %v:%d + %v:%d", a.id, a.value, m.id, m.value, b.id, b.value)
-		}
-	case '-':
-		if part2 {
-			if a == m.right {
-				a.value = b.value - m.value
-				logrus.Debugf("%v:%d = %v:%d - %v:%d", a.id, a.value, m.id, m.value, b.id, b.value)
-			} else {
-				a.value = m.value + b.value
-				logrus.Debugf("%v:%d = %v:%d + %v:%d", a.id, a.value, m.id, m.value, b.id, b.value)
-			}
-		} else {
+		case '-':
 			m.value = a.value - b.value
 			logrus.Debugf("%v:%d = %v:%d - %v:%d", a.id, a.value, m.id, m.value, b.id, b.value)
-		}
-	case '*':
-		if part2 {
-			a.value = m.value / b.value
-			logrus.Debugf("%v:%d = %v:%d / %v:%d", a.id, a.value, m.id, m.value, b.id, b.value)
-		} else {
+		case '*':
 			m.value = a.value * b.value
 			logrus.Debugf("%v:%d = %v:%d * %v:%d", a.id, a.value, m.id, m.value, b.id, b.value)
-		}
-	case '/':
-		if part2 {
-			if a == m.right {
-				a.value = b.value / m.value
-				logrus.Debugf("%v:%d = %v:%d / %v:%d", a.id, a.value, m.id, m.value, b.id, b.value)
-			} else {
-				a.value = m.value * b.value
-				logrus.Debugf("%v:%d = %v:%d * %v:%d", a.id, a.value, m.id, m.value, b.id, b.value)
-			}
-		} else {
+		case '/':
 			m.value = a.value / b.value
 			logrus.Debugf("%v:%d = %v:%d / %v:%d", a.id, a.value, m.id, m.value, b.id, b.value)
-		}
-	default:
-		logrus.Errorf("Unknown operation: {%c}", rune(m.op))
-	}
-	if part2 {
-		if a.id != "humn" || (a.left != nil && a.right != nil) {
-			a.number(part2)
+		default:
+			logrus.Errorf("Unknown operation: {%c}", rune(m.op))
+
 		}
 	}
 	return m.value
 }
 
-func parseRiddle(input *[]byte) ([]Monkey, map[string]int) {
-	lookup := make(map[string]int)
-	monkeys := []Monkey{}
+func parseRiddle(input *[]byte) map[string]*Monkey {
+	monkeys := make(map[string]*Monkey)
 	for _, line := range strings.Split(strings.TrimSpace(string(*input)), "\n") {
 		monkey := Monkey{value: 0}
 		m := strings.Split(strings.TrimSpace(line), ":")
@@ -138,14 +130,13 @@ func parseRiddle(input *[]byte) ([]Monkey, map[string]int) {
 		default:
 			logrus.Errorf("Something went wrong: {%v}", l)
 		}
-		monkeys = append(monkeys, monkey)
-		lookup[monkey.id] = len(monkeys) - 1
+		monkeys[monkey.id] = &monkey
 	}
 	for i, monkey := range monkeys {
 		if monkey.lstr != "" && monkey.rstr != "" {
-			monkeys[i].left = &(monkeys[lookup[monkey.lstr]])
-			monkeys[i].right = &(monkeys[lookup[monkey.rstr]])
+			monkeys[i].left = monkeys[monkey.lstr]
+			monkeys[i].right = monkeys[monkey.rstr]
 		}
 	}
-	return monkeys, lookup
+	return monkeys
 }

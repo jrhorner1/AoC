@@ -1,6 +1,9 @@
 # Ignore MacOS .DS_Store
 .DS_Store
 # Ingore session file
+# Ignore MacOS .DS_Store
+.DS_Store
+# Ingore session file
 session
 # Ignore external directories
 */external

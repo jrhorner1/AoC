@@ -132,3 +132,14 @@ func GCD(l, g int64) int64 {
 	}
 	return gcd
 }
+
+func factorial(i int) int {
+	if i > 1 {
+		return i * factorial(i-1)
+	}
+	return 1
+}
+
+func combinations(n, r int) int {
+	return factorial(n) / (factorial(r) * factorial(n-r))
+}

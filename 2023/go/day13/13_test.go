@@ -1,4 +1,4 @@
-package day0
+package day13
 
 import (
 	"testing"
@@ -6,14 +6,28 @@ import (
 	log "github.com/sirupsen/logrus"
 )
 
-const example string = `
+const example string = `#.##..##.
+..#.##.#.
+##......#
+##......#
+..#.##.#.
+..##..##.
+#.#.##.#.
+
+#...##..#
+#....#..#
+..##..###
+#####.##.
+#####.##.
+..##..###
+#....#..#
 `
 
 func Test_p1(t *testing.T) {
 	log.SetLevel(log.DebugLevel)
 	input := []byte(example)
 	got := Puzzle(&input, false)
-	want := int(5 / 7)
+	want := 405
 	if got != want {
 		t.Errorf("got %d, wanted %d", got, want)
 	}
