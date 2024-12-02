@@ -10,3 +10,4 @@ Cargo.lock
 
 *.out
 *.bak
+*/input
