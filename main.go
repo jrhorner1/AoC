@@ -51,6 +51,8 @@ func main() {
 			y22.Run(&year, &day)
 		case 2023:
 			y23.Run(&year, &day)
+		case 2024:
+			y24.Run(&year, &day)
 		default:
 			panic("Either advent of code didn't exist, or the year you're looking for isn't here yet.")
 		}
