@@ -4,7 +4,7 @@ This is a repo for my [Advent of Code](https://adventofcode.com) attempts.
 
 ## Solutions
 
-Puzzle solutions are meant to be run from the root of the repo. Without any arguments it will run the solution for the current day and year. 
+Puzzle solutions are meant to be run from the root of the repo. Without any arguments it will run the solution for the current day and year.
 
 ```bash
 ./main.go -y 2015 -d 2
@@ -40,7 +40,3 @@ I archived my older repos and moved the code to this one, however they are still
 
 * [2020](https://github.com/jrhorner1/aoc2020)
 * [2019](https://github.com/jrhorner1/aoc2019)
-
-
-
-
