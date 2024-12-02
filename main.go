@@ -19,6 +19,7 @@ import (
 	y21 "github.com/jrhorner1/AoC/2021/go"
 	y22 "github.com/jrhorner1/AoC/2022/go"
 	y23 "github.com/jrhorner1/AoC/2023/go"
+	y24 "github.com/jrhorner1/AoC/2024/go"
 )
 
 func main() {

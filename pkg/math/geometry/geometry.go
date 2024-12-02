@@ -18,6 +18,22 @@ func (p *Point) ManhattanDistance(q Point) int {
 	return math.Abs(q.X-p.X).(int) + math.Abs(q.Y-p.Y).(int)
 }
 
+func (p *Point) Add(q Point) Point {
+	return Point{p.X + q.X, p.Y + q.Y}
+}
+
+func (p *Point) Sub(q Point) Point {
+	return Point{p.X - q.X, p.Y - q.Y}
+}
+
+func (p *Point) Div(q Point) Point {
+	return Point{p.X / q.X, p.Y / q.Y}
+}
+
+func (p *Point) Mul(q Point) Point {
+	return Point{p.X * q.X, p.Y * q.Y}
+}
+
 type Line struct {
 	A Point
 	B Point
