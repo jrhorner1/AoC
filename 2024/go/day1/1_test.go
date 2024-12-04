@@ -6,7 +6,7 @@ import (
 	log "github.com/sirupsen/logrus"
 )
 
-***REMOVED***
+const example = ``
 
 func Test_p1(t *testing.T) {
 	log.SetLevel(log.DebugLevel)
