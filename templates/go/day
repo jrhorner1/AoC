@@ -4,8 +4,12 @@ import (
 	log "github.com/sirupsen/logrus"
 )
 
+const DEBUG = true
+
 func Puzzle(input *[]byte, part2 bool) int {
-	log.Debug("Insert Code Here")
+	if DEBUG {
+		log.SetLevel(log.DebugLevel)
+	}
 	if part2 {
 		return 42
 	}

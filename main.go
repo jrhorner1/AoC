@@ -20,6 +20,7 @@ import (
 	y22 "github.com/jrhorner1/AoC/2022/go"
 	y23 "github.com/jrhorner1/AoC/2023/go"
 	y24 "github.com/jrhorner1/AoC/2024/go"
+	y25 "github.com/jrhorner1/AoC/2025/go"
 )
 
 func main() {
@@ -53,6 +54,8 @@ func main() {
 			y23.Run(&year, &day)
 		case 2024:
 			y24.Run(&year, &day)
+		case 2025:
+			y25.Run(&year, &day)
 		default:
 			panic("Either advent of code didn't exist, or the year you're looking for isn't here yet.")
 		}

@@ -2,7 +2,7 @@ package y00
 
 import (
 	"fmt"
-	"io/ioutil"
+	"os"
 	log "github.com/sirupsen/logrus"
 )
 

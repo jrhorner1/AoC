@@ -14,6 +14,26 @@ type Point3D struct {
 	X, Y, Z int
 }
 
+func InitDeltas(n int) []Point {
+	deltas := []Point{
+		{X: 0, Y: -1},  // north
+		{X: 1, Y: -1},  // northeast
+		{X: 1, Y: 0},   // east
+		{X: 1, Y: 1},   // southeast
+		{X: 0, Y: 1},   // south
+		{X: -1, Y: 1},  // southwest
+		{X: -1, Y: 0},  // west
+		{X: -1, Y: -1}, // northwest
+	}
+	init := []Point{}
+	for i, d := range deltas {
+		if i%n == 0 {
+			init = append(init, d)
+		}
+	}
+	return init
+}
+
 func (p *Point) ManhattanDistance(q Point) int {
 	return math.Abs(q.X-p.X).(int) + math.Abs(q.Y-p.Y).(int)
 }
@@ -32,6 +52,10 @@ func (p *Point) Div(q Point) Point {
 
 func (p *Point) Mul(q Point) Point {
 	return Point{p.X * q.X, p.Y * q.Y}
+}
+
+func (p *Point) Delta(q Point) Point {
+	return Point{q.X - p.X, q.Y - p.Y}
 }
 
 type Line struct {
